@@ -1,5 +1,6 @@
 package com.prvavaja.grocerease
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -12,10 +13,20 @@ class MainActivity : AppCompatActivity() {
     private lateinit var serialization: Serialization
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Thread.sleep(3000)
-        installSplashScreen()
+        Thread.sleep(2000)
+        installSplashScreen() //splash scren
         binding = ActivityMainBinding.inflate(layoutInflater) //ADD THIS LINE
 
+
+        binding.listButton.setOnClickListener{//gumb da prides do lists
+            val intent = Intent(this, ListsActivity::class.java)
+            startActivity(intent)
+        }
+
+        //tukaj naprej sem testiral serializacijo in ostale razrede
+        //kodo sem ti pustil ce slucajno hoces malo pogledati kako deluje
+        //ali pa sam kaj stestirat
+        //drugace pa lahko vse pod tem brises
         val serialization=Serialization(this)
         var seznametest=ListOfGroceryLists()
         setContentView(binding.root)

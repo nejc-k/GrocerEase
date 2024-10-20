@@ -6,6 +6,7 @@ import java.io.File
 import java.util.UUID
 import android.content.Context
 
+//ta class ima metode za seralizacijo in deseralizacijo v grocereaseinfo.json na phonu
 class Serialization(private val context: Context) {
     val FILE_JSON = "grocereaseinfo.json"
 
@@ -31,14 +32,14 @@ class Serialization(private val context: Context) {
         }
     }
 
-    // Dodajanje novega sadja
+    // Dodajanje novihpodatkov
     fun addInfo(newList: GroceryList) {
         val curentInfo = readInfo().toMutableList()
         curentInfo.add(newList)
         saveInfo(curentInfo)
     }
 
-    // Posodabljanje podatkov za določeno sadje
+    // Posodabljanje podatkov
     fun updateInfo(uuid: UUID, updatedList: GroceryList) {
         val curentInfo = readInfo().toMutableList()
         val index = curentInfo.indexOfFirst { it.uuid == uuid }
@@ -49,7 +50,7 @@ class Serialization(private val context: Context) {
         }
     }
 
-    // Brisanje sadja
+    // Brisanje podatkov
     fun delete(uuid: UUID) {
         val curentInfo = readInfo().toMutableList()
         val newInfo = curentInfo.filter { it.uuid != uuid }

@@ -7,13 +7,15 @@ import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 
 import java.util.UUID
+
+//seraliziran class za nakupovalni seznam
 @Serializable
-class GroceryList(var lisrName:String,var date:String,var items: MutableList<Item> = mutableListOf()) {
+class GroceryList(var lisrName:String,var date:String,var items: MutableList<Item> = mutableListOf()) {//konstruktor
     @Serializable(with = UUIDSerializer::class)
     var uuid: UUID = UUID.randomUUID()
 
 
-    override fun equals(other: Any?): Boolean {
+    override fun equals(other: Any?): Boolean {//primerjnje po uuid dveh listov
         if (this === other) return true
         if (other == null || javaClass != other.javaClass) return false
         val otherGroceryList = other as GroceryList
@@ -27,7 +29,7 @@ class GroceryList(var lisrName:String,var date:String,var items: MutableList<Ite
     override fun toString(): String {
         return "Grocery list, name: " + lisrName+ "UUID:" +uuid +" Items: "+ items.toString()
     }
-    object UUIDSerializer : KSerializer<UUID> {
+    object UUIDSerializer : KSerializer<UUID> {//posebej seralizacija za uuid
         override val descriptor = PrimitiveSerialDescriptor("UUID", PrimitiveKind.STRING)
         override fun deserialize(decoder: Decoder): UUID {
             return UUID.fromString(decoder.decodeString())
@@ -39,7 +41,7 @@ class GroceryList(var lisrName:String,var date:String,var items: MutableList<Ite
 
 
     }
-///delo z listom itemov
+///delo z listom itemov, metode za delo z posameznimi izdelki znotraj nakupovalnega lista
     fun addItem(item: Item) {
         items.add(item)
     }

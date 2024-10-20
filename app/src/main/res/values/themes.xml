@@ -9,7 +9,7 @@
     
     <style name="Theme.App.SplashScreen" parent="Theme.SplashScreen">
         <item name="windowSplashScreenBackground">@color/yellow</item>
-        <item name="windowSplashScreenAnimatedIcon">@drawable/logo1</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/logogrocerease</item>
         <item name="postSplashScreenTheme">@style/Base.Theme.GrocerEase</item>
     </style>
 </resources>
