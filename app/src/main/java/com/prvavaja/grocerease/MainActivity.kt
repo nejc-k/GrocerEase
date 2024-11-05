@@ -13,7 +13,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var serialization: Serialization
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Thread.sleep(2000)
+        Thread.sleep(1000)
         installSplashScreen() //splash scren
         binding = ActivityMainBinding.inflate(layoutInflater) //ADD THIS LINE
 

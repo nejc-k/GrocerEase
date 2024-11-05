@@ -1,26 +1,28 @@
 package com.prvavaja.grocerease
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-class ListsActivity : AppCompatActivity() {
-
+class SingleListActivity : AppCompatActivity() {
     lateinit var app: MyApplication
-    lateinit var myAdapter: MyAdapterLists
+    lateinit var myAdapter: MyAdapterItems
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_lists)
+        setContentView(R.layout.activity_single_list)
 
         app = application as MyApplication
-        myAdapter = MyAdapterLists(app)
-        val recyclerView: RecyclerView = this.findViewById(R.id.recyclerView)
+        myAdapter = MyAdapterItems(app)
+        val recyclerView: RecyclerView = this.findViewById(R.id.itemsRV)
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = myAdapter
+        val singleListTitleTV: TextView = this.findViewById(R.id.singleListTitleTV)
+        singleListTitleTV.text = app.currentList.listName
     }
 
     fun backOnClick(view: View) {
