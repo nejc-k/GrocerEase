@@ -1,0 +1,12 @@
+{
+  "items": [
+    {
+      "itemName": "Item A spar",
+      "amount": "10 spar"
+    },
+    {
+      "itemName": "Item B spar",
+      "amount": "5 spar"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "items": [
+    {
+      "itemName": "Item A mercator",
+      "amount": "10 mercator"
+    },
+    {
+      "itemName": "Item B mercator",
+      "amount": "5 mercator"
+    }
+  ]
+}

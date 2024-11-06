@@ -23,6 +23,11 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        binding.mapButton.setOnClickListener{//gumb da prides do lists
+            val intent = Intent(this, MapActivity::class.java)
+            startActivity(intent)
+        }
+
         //tukaj naprej sem testiral serializacijo in ostale razrede
         //kodo sem ti pustil ce slucajno hoces malo pogledati kako deluje
         //ali pa sam kaj stestirat
