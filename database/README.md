@@ -1,13 +1,14 @@
 ### Podatkovna baza 
-**Info** -> MongoDB Atlas Database, Cluster0
-**User** -> user:IigChwsYtIpq8R21
-**Database name** -> grocerease
-**Url** -> mongodb+srv://user:IigChwsYtIpq8R21@cluster0.o50mfr6.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+
+Info -> MongoDB Atlas Database, Cluster0
+User -> user:IigChwsYtIpq8R21
+Database name -> grocerease
+Url -> mongodb+srv://user:IigChwsYtIpq8R21@cluster0.o50mfr6.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
 
 ##### Collections
 - User [user_id, name, email, hashed password]
-- Items [item_id, item name]
-- List [list_id, items (array of ids), user_id]
+- Items [item_id, trgovina, ime, st_izdelkov, note]
+- List [list_id, user_id, items (array of ids)]
 - ...
 
 ##### Api
