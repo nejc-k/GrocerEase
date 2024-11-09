@@ -1,5 +1,6 @@
 package com.prvavaja.grocerease
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
@@ -26,6 +27,15 @@ class SingleListActivity : AppCompatActivity() {
     }
 
     fun backOnClick(view: View) {
+        val intent = Intent(this, ListsActivity::class.java)
+        startActivity(intent)
         finish()
+    }
+
+    fun addOnClick(view: View){
+        val intent = Intent(this, AddEditItemActivity::class.java)
+        app.currentItem = Item("", "", "")
+        app.currentList.addItem(app.currentItem)
+        startActivity(intent)
     }
 }

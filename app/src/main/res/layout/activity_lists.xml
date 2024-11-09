@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#ECD71E"
     tools:context=".ListsActivity">
 
     <androidx.constraintlayout.widget.Guideline
@@ -47,8 +48,8 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:onClick="backOnClick"
-        android:text="BACK"
-        android:textSize="25sp"
+        android:text="Back"
+        android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline3"
         app:layout_constraintStart_toStartOf="parent"
@@ -58,6 +59,7 @@
         android:id="@+id/btnAdd"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:onClick="addListOnClick"
         android:text="+"
         android:textSize="34sp"
         app:layout_constraintBottom_toBottomOf="parent"

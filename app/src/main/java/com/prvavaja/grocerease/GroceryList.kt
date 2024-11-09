@@ -56,8 +56,8 @@ class GroceryList(var listName:String, var date:String, var items: MutableList<I
             items[index] = updatedItem
         }
     }
-    fun removeItem(item: Item) {
-        items.remove(item)
+    fun removeItem(uuid: UUID) {
+        items.remove(items.find { it.uuid == uuid })
     }
     fun getAllItems(): List<Item> {
         val sortedItems = items

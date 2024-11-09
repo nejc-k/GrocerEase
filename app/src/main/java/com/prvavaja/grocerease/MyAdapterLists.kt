@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView
 
 class MyAdapterLists(val app: MyApplication) :
     RecyclerView.Adapter<MyAdapterLists.MyViewHolder>() {
-    private val INPUT_ACTIVITY_REQUEST_CODE = 1
     class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val listNameTV: TextView
         val numOfItemsTV: TextView

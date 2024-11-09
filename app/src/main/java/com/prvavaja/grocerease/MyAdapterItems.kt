@@ -2,6 +2,7 @@ package com.prvavaja.grocerease
 
 import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView
 
 class MyAdapterItems(val app: MyApplication) :
     RecyclerView.Adapter<MyAdapterItems.MyViewHolder>() {
-    private val INPUT_ACTIVITY_REQUEST_CODE = 1
     class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val itemNameTV: TextView
         val amountTV: TextView
@@ -43,26 +43,20 @@ class MyAdapterItems(val app: MyApplication) :
         )
 
         holder.itemView.setOnLongClickListener {
-            showDeleteConfirmationDialog(holder.itemView.context, position)
+            changeCheckItem(holder, position)
             true
         }
         holder.itemView.setOnClickListener {
-            changeCheckItem(holder, position)
+            openEditActivity(holder.itemView.context, position)
         }
     }
 
-    private fun openDetailsActivity(context: Context, position: Int) {
-        /*val intent = Intent(context, InputActivity::class.java)
-
-        val current = app.library.books[position]
-        val bundle = Bundle()
-        bundle.putString("jsonData", Json.encodeToString(current))
-        bundle.putString("edit", "true")
-        bundle.putInt("position", position)
-        intent.putExtras(bundle)
-        (context as Activity).startActivityForResult(intent, INPUT_ACTIVITY_REQUEST_CODE)
-        //context.startActivity(intent)*/
+    private fun openEditActivity(context: Context, position: Int) {
+        val intent = Intent(context, AddEditItemActivity::class.java)
+        app.currentItem = app.currentList.items[position]
+        context.startActivity(intent)
     }
+
     private fun changeCheckItem(holder: MyViewHolder, position: Int) {
         val current = app.currentList.items[position]
         current.checked = !current.checked
@@ -72,7 +66,7 @@ class MyAdapterItems(val app: MyApplication) :
         notifyItemChanged(position)
     }
 
-    private fun showDeleteConfirmationDialog(context: Context, position: Int) {
+    /*private fun showDeleteConfirmationDialog(context: Context, position: Int) {
         if(app.listOfgrocerylists.getAllLists()[position].items.size > 1){
             Toast.makeText(context, "You can't delete lists that have items in it", Toast.LENGTH_SHORT).show()
             return
@@ -92,7 +86,7 @@ class MyAdapterItems(val app: MyApplication) :
 
         val alertDialog: AlertDialog = alertDialogBuilder.create()
         alertDialog.show()
-    }
+    }*/
 
     override fun getItemCount() = app.currentList.getAllItems().size
 }
