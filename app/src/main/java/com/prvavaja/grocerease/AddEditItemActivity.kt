@@ -10,8 +10,42 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 
 class AddEditItemActivity : AppCompatActivity() {
-    var stores = arrayOf<String?>("None", "Supernova Tabor", "Europark",
-        "Mercator center Tabor")
+    var stores = arrayOf<String?>(
+        "None",
+        "Mercator Market Pionirska Maribor",
+        "Poslovni sistem Mercator d.d.",
+        "Mercator Tržaška cesta",
+        "Mercator Center",
+        "Mercator Puhova ulica",
+
+        "Lidl Koroška cesta",
+        "Lidl Titova cesta",
+        "Lidl Industrijska ulica",
+        "Lidl Ulica I. Internacionale",
+        "Lidl Tržaška cesta",
+        "Lidl Ulica Veljka Vlahoviča",
+        "Lidl Ptujska cesta",
+        "Lidl Slivniška cesta",
+
+        "Hofer Vodnikov trg",
+        "Hofer Linhartova Ulica",
+        "Hofer Slovenija",
+        "Hofer Koroška cesta",
+        "Hofer Ulica Veljka Vlahovića",
+        "Hofer Šentiljska cesta",
+        "Hofer Cesta proletarskih brigad",
+        "Hofer Ptujska cesta",
+        "Hofer Lenart",
+
+        "Supermarket Spar Trg Svobode",
+        "Supermarket Spar Žolgarjeva ulica",
+        "InterSpar Pobreška cesta",
+        "Hipermarket Spar Ulica Veljka Vlahoviča",
+        "Restavracije InterSpar Pobreška cesta",
+        "Supermarket Spar Prvomajska ulica",
+        "Spar C. prolet. brigad",
+        "Supermarket Spar Ptujska cesta"
+    )
     lateinit var app: MyApplication
     lateinit var myAdapter: MyAdapterLists
 

@@ -110,21 +110,6 @@ class MapActivity : AppCompatActivity() {
             override fun onNothingSelected(parent: AdapterView<*>) {}
         }
 
-        binding.buttonMap.setOnClickListener{
-                if (selectedStore!="") {
-                    val intent = Intent(this, MapAdd::class.java)
-                    intent.putExtra("STORE_NAME", binding.displayTextMap.text.toString())
-                    intent.putExtra("STORE", selectedStore)
-                    startActivity(intent)
-                }else {
-                    // Show a Toast message if no store is selected
-                    Toast.makeText(this, "You need to choose a store on the map.", Toast.LENGTH_SHORT).show()
-                }
-
-        }
-
-
-
         /*// Add a marker mercator
         val markerM1 = Marker(mapView)
         markerM1.position = GeoPoint(46.560608, 15.651450)
@@ -151,6 +136,25 @@ class MapActivity : AppCompatActivity() {
         mapView.overlays.add(markerM4)*/
 
     }
+
+    fun filterOnClick(view: View){
+        if (selectedStore!="") {
+            val intent = Intent(this, SingleListActivity::class.java)
+            intent.putExtra("STORE_NAME", binding.selectedStoreTV.text.toString())
+            intent.putExtra("STORE", selectedStore)
+            startActivity(intent)
+        }else {
+            Toast.makeText(this, "You need to choose a store on the map.", Toast.LENGTH_SHORT).show()
+        }
+
+    }
+
+    fun backOnClick(view: View) {
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+
     fun displayMarkers(category: String) {
         // Close all open info windows
         currentMarkers.forEach { it.closeInfoWindow() }
@@ -170,7 +174,7 @@ class MapActivity : AppCompatActivity() {
             // Set up a click listener for the marker
             marker.setOnMarkerClickListener { _, _ ->
                 // Update the TextView with the marker's title
-                binding.displayTextMap.text=markerData.title
+                binding.selectedStoreTV.text=markerData.title
                 selectedStore=curentStore
                 true // Return true to indicate the event was handled
             }
@@ -181,37 +185,4 @@ class MapActivity : AppCompatActivity() {
         // Refresh the map to show the new markers
         mapView.invalidate()
     }
-/*"Mercator Market Pionirska Maribor"
-"Poslovni sistem Mercator d.d."
-"Mercator Tržaška cesta"
-"Mercator Center"
-"Mercator Puhova ulica"
-
-"Lidl Koroška cesta"
-"Lidl Titova cesta"
-"Lidl Industrijska ulica "
-"Lidl Ulica I. Internacionale"
-"Lidl Tržaška cesta"
-"Lidl Ulica Veljka Vlahoviča"
-"Lidl Ptujska cesta"
-"Lidl Slivniška cesta"
-
-"Hofer Vodnikov trg"
-"Hofer Linhartova Ulica"
-"Hofer Slovenija"
-"Hofer Koroška cesta"
-"Hofer Ulica Veljka Vlahovića"
-"Hofer Šentiljska cesta"
-"Hofer Cesta proletarskih brigad"
-"Hofer Ptujska cesta"
-"Hofer Lenart"
-
-"Supermarket Spar Trg Svobode"
-"Supermarket Spar Žolgarjeva ulica"
-"InterSpar Pobreška cesta"
-"Hipermarket Spar Ulica Veljka Vlahoviča"
-"Restavracije InterSpar Pobreška cesta"
-"Supermarket Spar Prvomajska ulica"
-"Spar C. prolet. brigad"
-"Supermarket Spar Ptujska cesta"*/
 }

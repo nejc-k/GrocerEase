@@ -7,12 +7,16 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class SingleListActivity : AppCompatActivity() {
     lateinit var app: MyApplication
     lateinit var myAdapter: MyAdapterItems
+    lateinit var storeName: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        storeName = intent.getStringExtra("STORE_NAME").toString()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_single_list)
 
@@ -21,14 +25,34 @@ class SingleListActivity : AppCompatActivity() {
         val recyclerView: RecyclerView = this.findViewById(R.id.itemsRV)
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = myAdapter
+
         val singleListTitleTV: TextView = this.findViewById(R.id.singleListTitleTV)
+        if(storeName != "null"){
+            val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
+            val today = LocalDateTime.now().format(formatter)
+            val allLists = app.listOfgrocerylists.getAllLists()
+            app.currentList = GroceryList(storeName, today)
+            for(l in allLists){
+                for(i in l.items){
+                    if(i.store == storeName){
+                        app.currentList.addItem(i)
+                    }
+                }
+            }
+        }
         singleListTitleTV.text = app.currentList.listName
+        recyclerView.adapter = myAdapter
     }
 
     fun backOnClick(view: View) {
-        val intent = Intent(this, ListsActivity::class.java)
-        startActivity(intent)
+        if(storeName != "null"){
+            val intent = Intent(this, MapActivity::class.java)
+            startActivity(intent)
+        }
+        else{
+            val intent = Intent(this, ListsActivity::class.java)
+            startActivity(intent)
+        }
         finish()
     }
 
