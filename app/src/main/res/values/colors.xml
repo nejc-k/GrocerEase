@@ -3,4 +3,5 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="yellow">#ECD71E</color>
+    <color name="iconBack">#4F5252</color>
 </resources>

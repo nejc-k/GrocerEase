@@ -9,7 +9,7 @@ import kotlinx.serialization.encoding.Decoder
 import java.util.UUID
 //seraliziran razred za vsak izdelek na nakupovalnem listu
 @Serializable
-class Item(var itemName:String,var store:String,var amaut:String) {//konstruktor
+class Item(var itemName:String,var store:String,var amount:String, var checked:Boolean = false, var note:String="") {//konstruktor
     @Serializable(with = UUIDSerializer::class)
     var uuid: UUID = UUID.randomUUID()
 
@@ -25,7 +25,7 @@ class Item(var itemName:String,var store:String,var amaut:String) {//konstruktor
     }
 
     override fun toString(): String {
-        return "item, Name: "+itemName + "UUID: " + uuid +" Store: "+ store+" Amaunt"+amaut
+        return "item, Name: "+itemName + "UUID: " + uuid +" Store: "+ store+" Amaunt: "+amount + " Note: "+ note + " Checked: "+checked.toString()
     }
     object UUIDSerializer : KSerializer<UUID> {//posebej serializacija za uuid
         override val descriptor = PrimitiveSerialDescriptor("UUID", PrimitiveKind.STRING)
