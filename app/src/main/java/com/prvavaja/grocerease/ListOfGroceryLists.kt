@@ -1,8 +1,6 @@
 package com.prvavaja.grocerease
 
 import java.util.UUID
-//lista ki hrani vse nakupovalne liste, se ustvari v Myaplication ko se aplikacija zazene in znotraj se hranijo vse deserializirane
-//informacije, namenjen za uporabo pri recyclerview
 class ListOfGroceryLists {
 
     private val lists = mutableListOf<GroceryList>()
@@ -23,12 +21,11 @@ class ListOfGroceryLists {
     fun removeList(list: GroceryList) {//remove
         lists.remove(list)
     }
-    fun getAllLists(): List<GroceryList> {//get all
-        val sortedList = lists
-        for (list in sortedList) {
+    fun getAllLists(): MutableList<GroceryList> {//get all
+        for (list in lists) {
             println(list.toString())
         }
-        return sortedList
+        return lists
     }
     fun size(): Int {
         return lists.size

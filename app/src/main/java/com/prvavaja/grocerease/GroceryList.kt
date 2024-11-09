@@ -10,7 +10,7 @@ import java.util.UUID
 
 //seraliziran class za nakupovalni seznam
 @Serializable
-class GroceryList(var lisrName:String,var date:String,var items: MutableList<Item> = mutableListOf()) {//konstruktor
+class GroceryList(var listName:String, var date:String, var items: MutableList<Item> = mutableListOf()) {//konstruktor
     @Serializable(with = UUIDSerializer::class)
     var uuid: UUID = UUID.randomUUID()
 
@@ -27,7 +27,7 @@ class GroceryList(var lisrName:String,var date:String,var items: MutableList<Ite
     }
 
     override fun toString(): String {
-        return "Grocery list, name: " + lisrName+ "UUID:" +uuid +" Items: "+ items.toString()
+        return "Grocery list, name: " + listName+ "UUID:" +uuid +" Items: "+ items.toString()
     }
     object UUIDSerializer : KSerializer<UUID> {//posebej seralizacija za uuid
         override val descriptor = PrimitiveSerialDescriptor("UUID", PrimitiveKind.STRING)
@@ -41,7 +41,7 @@ class GroceryList(var lisrName:String,var date:String,var items: MutableList<Ite
 
 
     }
-///delo z listom itemov, metode za delo z posameznimi izdelki znotraj nakupovalnega lista
+//delo z listom itemov, metode za delo z posameznimi izdelki znotraj nakupovalnega lista
     fun addItem(item: Item) {
         items.add(item)
     }
@@ -56,8 +56,8 @@ class GroceryList(var lisrName:String,var date:String,var items: MutableList<Ite
             items[index] = updatedItem
         }
     }
-    fun removeItem(item: Item) {
-        items.remove(item)
+    fun removeItem(uuid: UUID) {
+        items.remove(items.find { it.uuid == uuid })
     }
     fun getAllItems(): List<Item> {
         val sortedItems = items
