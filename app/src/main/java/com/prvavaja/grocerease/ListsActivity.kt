@@ -16,10 +16,14 @@ class ListsActivity : AppCompatActivity() {
 
     lateinit var app: MyApplication
     lateinit var myAdapter: MyAdapterLists
+    lateinit var serialization: Serialization // Declare it globally
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lists)
+        //val serialization = Serialization(this)
+        // Initialize the Serialization object here
+        serialization = Serialization(this)
 
         app = application as MyApplication
         myAdapter = MyAdapterLists(app)
@@ -50,6 +54,7 @@ class ListsActivity : AppCompatActivity() {
             setPositiveButton("OK"){dialog, which ->
                 app.listOfgrocerylists.addList(GroceryList(addListNameET.text.toString(), today))
                 recyclerView.adapter?.notifyItemInserted(app.listOfgrocerylists.size()-1)
+                serialization.addInfo(app.listOfgrocerylists.getLastList())
             }
             setNegativeButton("Cancel"){dialog, which ->
                 Log.d("Lists", "Adding a list canceled!")

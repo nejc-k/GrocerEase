@@ -1,0 +1,12 @@
+{
+  "items": [
+    {
+      "itemName": "Item A hofer",
+      "amount": "10 hofer"
+    },
+    {
+      "itemName": "Item B hofer",
+      "amount": "5 hofer"
+    }
+  ]
+}
