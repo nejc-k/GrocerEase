@@ -81,6 +81,14 @@ class AddEditItemActivity : AppCompatActivity() {
         ad.setDropDownViewResource(
             android.R.layout.simple_spinner_dropdown_item)
         storeDD.adapter = ad
+        var position = 0;
+        for(i in 0..(stores.size-1)){
+            if(stores[i] == app.currentItem.store){
+                position = i
+                break
+            }
+        }
+        storeDD.setSelection(position)
     }
 
 
@@ -97,14 +105,7 @@ class AddEditItemActivity : AppCompatActivity() {
         app.currentItem.amount = findViewById<TextView>(R.id.amountET).text.toString()
         app.currentItem.note = findViewById<TextView>(R.id.noteET).text.toString()
         app.currentItem.store = findViewById<Spinner>(R.id.storeDD).selectedItem.toString()
-        /*println("list")
-        println(app.currentList)
-        println("item")
-        println(app.currentItem)*/
-        var listTemp=app.currentList
-        println("list before saving")
-        println(app.currentList)
-        //listTemp.addItem(app.currentItem)
+
         serialization.updateInfo(app.currentList.uuid,app.currentList)
         val intent = Intent(this, SingleListActivity::class.java)
         startActivity(intent)

@@ -54,11 +54,7 @@ class ListsActivity : AppCompatActivity() {
             setPositiveButton("OK"){dialog, which ->
                 app.listOfgrocerylists.addList(GroceryList(addListNameET.text.toString(), today))
                 recyclerView.adapter?.notifyItemInserted(app.listOfgrocerylists.size()-1)
-                /*val items = mutableListOf<Item>()
-                var list1=GroceryList("filip","20.12.2024", items)
-                var item1=Item("voda","mercator","4 l")
-                list1.addItem(item1)*/
-                serialization.addInfo(GroceryList(addListNameET.text.toString(), today))
+                serialization.addInfo(app.listOfgrocerylists.getLastList())
             }
             setNegativeButton("Cancel"){dialog, which ->
                 Log.d("Lists", "Adding a list canceled!")
