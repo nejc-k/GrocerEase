@@ -7,8 +7,8 @@ import com.prvavaja.grocerease.databinding.ActivityMainBinding
 
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityMainBinding //ADD THIS LINE
-
+    private lateinit var binding: ActivityMainBinding
+    private lateinit var serialization: Serialization
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -29,6 +29,5 @@ class MainActivity : AppCompatActivity() {
             intent.putExtra("isGuest", true)  // Pass a flag to indicate guest status
             startActivity(intent)
         }
-
     }
 }

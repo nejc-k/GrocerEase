@@ -6,24 +6,16 @@ import java.io.File
 import java.util.UUID
 import android.content.Context
 
-//ta class ima metode za seralizacijo in deseralizacijo v grocereaseinfo.json na phonu
 class Serialization(private val context: Context) {
     val FILE_JSON = "grocereaseinfo.json"
 
-    // Shranjevanje podatkov v datoteko
-
     fun saveInfo(info: List<GroceryList>) {
         val jsonString = Json.encodeToString(info)
-        //File(DATOTEKA_JSON).writeText(jsonString)
-        //val file = File(application.filesDir, DATOTEKA_JSON)
-        //file.writeText(jsonString)
         File(context.filesDir, FILE_JSON).writeText(jsonString)
     }
 
-    // Branje podatkov iz datoteke
     fun readInfo(): List<GroceryList> {
         return try {
-            //val jsonString = File(DATOTEKA_JSON).readText()
             val file = File(context.filesDir, FILE_JSON)
             val jsonString = file.readText()
             Json.decodeFromString(jsonString)
@@ -32,27 +24,30 @@ class Serialization(private val context: Context) {
         }
     }
 
-    // Dodajanje novihpodatkov
     fun addInfo(newList: GroceryList) {
         val curentInfo = readInfo().toMutableList()
+        println("uuid add")
+        println(newList)
         curentInfo.add(newList)
         saveInfo(curentInfo)
     }
 
-    // Posodabljanje podatkov
     fun updateInfo(uuid: UUID, updatedList: GroceryList) {
         val curentInfo = readInfo().toMutableList()
         val index = curentInfo.indexOfFirst { it.uuid == uuid }
 
         if (index != -1) {
+            println("uuid update")
+            println(updatedList)
             curentInfo[index] = updatedList
             saveInfo(curentInfo)
         }
     }
 
-    // Brisanje podatkov
     fun delete(uuid: UUID) {
         val curentInfo = readInfo().toMutableList()
+        println("uuid delete")
+        println(uuid)
         val newInfo = curentInfo.filter { it.uuid != uuid }
         saveInfo(newInfo)
     }

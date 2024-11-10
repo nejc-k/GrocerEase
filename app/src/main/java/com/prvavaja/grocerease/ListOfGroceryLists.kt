@@ -23,7 +23,7 @@ class ListOfGroceryLists {
     }
     fun getAllLists(): MutableList<GroceryList> {//get all
         for (list in lists) {
-            println(list.toString())
+            //println(list.toString())
         }
         return lists
     }

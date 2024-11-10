@@ -12,7 +12,9 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 
 class MyAdapterItems(val app: MyApplication) :
+
     RecyclerView.Adapter<MyAdapterItems.MyViewHolder>() {
+
     class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val itemNameTV: TextView
         val amountTV: TextView
@@ -63,6 +65,10 @@ class MyAdapterItems(val app: MyApplication) :
         holder.checkBoxIV.setImageResource(
             if (current.checked) R.drawable.checkbox_circle else R.drawable.checkbox_blank_circle
         )
+
+        val serialization = Serialization(holder.itemView.context)
+        serialization.updateInfo(app.currentList.uuid,app.currentList)
+
         notifyItemChanged(position)
     }
 

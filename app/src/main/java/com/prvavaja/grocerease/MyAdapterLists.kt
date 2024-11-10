@@ -61,7 +61,12 @@ class MyAdapterLists(val app: MyApplication) :
         alertDialogBuilder.setMessage("Are you sure you want to delete this item?")
 
         alertDialogBuilder.setPositiveButton("Yes") { _, _ ->
+            // Initialize the Serialization object
+            val serialization = Serialization(context)
+            // Serialize the updated list after deletion (or perform any other relevant serialization)
+            serialization.delete(app.listOfgrocerylists.getAllLists()[position].uuid)
             app.listOfgrocerylists.getAllLists().removeAt(position)
+
             notifyItemRemoved(position)
         }
 
