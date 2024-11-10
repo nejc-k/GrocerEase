@@ -48,6 +48,7 @@ class AddEditItemActivity : AppCompatActivity() {
     )
     lateinit var app: MyApplication
     lateinit var myAdapter: MyAdapterLists
+    lateinit var serialization: Serialization // Declare it globally
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,7 +56,7 @@ class AddEditItemActivity : AppCompatActivity() {
 
         app = application as MyApplication
         myAdapter = MyAdapterLists(app)
-
+        serialization = Serialization(this)
         val itemTitleTV = findViewById<TextView>(R.id.itemTitleTV)
         val itemNameET = findViewById<TextView>(R.id.itemNameET)
         val amountET = findViewById<TextView>(R.id.amountET)
@@ -86,6 +87,7 @@ class AddEditItemActivity : AppCompatActivity() {
     fun deleteOnClick(view: View) {
         app.currentList.removeItem(app.currentItem.uuid)
         val intent = Intent(this, SingleListActivity::class.java)
+        serialization.updateInfo(app.currentList.uuid,app.currentList)
         startActivity(intent)
         finish()
     }
@@ -95,6 +97,15 @@ class AddEditItemActivity : AppCompatActivity() {
         app.currentItem.amount = findViewById<TextView>(R.id.amountET).text.toString()
         app.currentItem.note = findViewById<TextView>(R.id.noteET).text.toString()
         app.currentItem.store = findViewById<Spinner>(R.id.storeDD).selectedItem.toString()
+        /*println("list")
+        println(app.currentList)
+        println("item")
+        println(app.currentItem)*/
+        var listTemp=app.currentList
+        println("list before saving")
+        println(app.currentList)
+        //listTemp.addItem(app.currentItem)
+        serialization.updateInfo(app.currentList.uuid,app.currentList)
         val intent = Intent(this, SingleListActivity::class.java)
         startActivity(intent)
         finish()

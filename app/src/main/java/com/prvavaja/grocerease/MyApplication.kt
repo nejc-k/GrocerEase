@@ -19,5 +19,11 @@ class MyApplication:  Application() {
             listOfgrocerylists.getLastList().addItem(Item("hruska","","10"))
         }*/
         super.onCreate()
+        val serialization = Serialization(this)
+        val info = serialization.readInfo()//prebere podatke shranjene v telefonu
+        for (lists in info) {
+            println(lists)
+            listOfgrocerylists.addList(lists)
+        }
     }
 }

@@ -35,6 +35,8 @@ class Serialization(private val context: Context) {
     // Dodajanje novihpodatkov
     fun addInfo(newList: GroceryList) {
         val curentInfo = readInfo().toMutableList()
+        println("uuid add")
+        println(newList)
         curentInfo.add(newList)
         saveInfo(curentInfo)
     }
@@ -45,6 +47,8 @@ class Serialization(private val context: Context) {
         val index = curentInfo.indexOfFirst { it.uuid == uuid }
 
         if (index != -1) {
+            println("uuid update")
+            println(updatedList)
             curentInfo[index] = updatedList
             saveInfo(curentInfo)
         }
@@ -53,6 +57,8 @@ class Serialization(private val context: Context) {
     // Brisanje podatkov
     fun delete(uuid: UUID) {
         val curentInfo = readInfo().toMutableList()
+        println("uuid delete")
+        println(uuid)
         val newInfo = curentInfo.filter { it.uuid != uuid }
         saveInfo(newInfo)
     }

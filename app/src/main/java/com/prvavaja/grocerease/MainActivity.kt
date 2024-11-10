@@ -14,7 +14,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater) //ADD THIS LINE
-
+        setContentView(binding.root)
 
         binding.listButton.setOnClickListener{//gumb da prides do lists
             val intent = Intent(this, ListsActivity::class.java)
@@ -30,9 +30,10 @@ class MainActivity : AppCompatActivity() {
         //kodo sem ti pustil ce slucajno hoces malo pogledati kako deluje
         //ali pa sam kaj stestirat
         //drugace pa lahko vse pod tem brises
+
         val serialization=Serialization(this)
         var seznametest=ListOfGroceryLists()
-        setContentView(binding.root)
+        /*
         var item1=Item("voda","mercator","4 l")
         var item2=Item("sok","tus","5 l")
         var item3=Item("jagode","spar","250 g")
@@ -69,7 +70,7 @@ class MainActivity : AppCompatActivity() {
         for (sadje3 in podatki23) {
             println(sadje3)
             //list.addItem(sadje)
-        }
+        }*/
 
 
 
