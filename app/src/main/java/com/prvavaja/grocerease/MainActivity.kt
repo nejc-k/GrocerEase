@@ -23,5 +23,12 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
         }
+
+        binding.btnGuest.setOnClickListener {
+            val intent = Intent(this, HomeActivity::class.java)
+            intent.putExtra("isGuest", true)  // Pass a flag to indicate guest status
+            startActivity(intent)
+        }
+
     }
 }

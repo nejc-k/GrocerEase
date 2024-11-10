@@ -1,4 +1,5 @@
 package com.prvavaja.grocerease
+
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -8,6 +9,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -29,7 +31,7 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var confirmPasswordEditText: EditText
     private lateinit var registerButton: Button
     private lateinit var loginLink: TextView
-
+    private lateinit var btnBack: Button
     private var imageUri: Uri? = null
 
     private lateinit var pickMedia: ActivityResultLauncher<PickVisualMediaRequest>
@@ -45,6 +47,7 @@ class RegisterActivity : AppCompatActivity() {
         confirmPasswordEditText = findViewById(R.id.confirmPasswordRegister)
         registerButton = findViewById(R.id.btnRegister)
         loginLink = findViewById(R.id.loginLink)
+        btnBack = findViewById(R.id.btnBack)
 
         loginLink.setOnClickListener {
             val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
@@ -55,9 +58,7 @@ class RegisterActivity : AppCompatActivity() {
             if (uri != null) {
                 Log.d("PhotoPicker", "Selected URI: $uri")
                 imageUri = uri
-
                 contentResolver.takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
-
                 userImageView.setImageURI(imageUri)
             } else {
                 Log.d("PhotoPicker", "No media selected")
@@ -71,6 +72,11 @@ class RegisterActivity : AppCompatActivity() {
         registerButton.setOnClickListener {
             registerUser()
         }
+
+        btnBack.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun registerUser() {
@@ -79,13 +85,29 @@ class RegisterActivity : AppCompatActivity() {
         val password = passwordEditText.text.toString().trim()
         val confirmPassword = confirmPasswordEditText.text.toString().trim()
 
+        // Check if all fields are filled
         if (username.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
             Log.e("RegisterActivity", "Please fill in all fields")
             return
         }
 
+        // Validate email format
+        if (!isValidEmail(email)) {
+            Log.e("RegisterActivity", "Invalid email format")
+            emailEditText.error = "Invalid email format" // Show error on the email field
+            return
+        }
+
+        // Check if passwords match
         if (password != confirmPassword) {
             Log.e("RegisterActivity", "Passwords do not match")
+            return
+        }
+
+        // Check if password meets the minimum length requirement (5 characters)
+        if (password.length < 5) {
+            Log.e("RegisterActivity", "Password must be at least 5 characters")
+            passwordEditText.error = "Password must be at least 5 characters" // Show error on the password field
             return
         }
 
@@ -115,9 +137,9 @@ class RegisterActivity : AppCompatActivity() {
         """.trimIndent()
 
         val requestBody = jsonBody.toRequestBody(jsonMediaType)
-        Log.d("-----------------------------------------------",jsonBody)
+        Log.d("-----------------------------------------------", jsonBody)
         val request = Request.Builder()
-            .url("http:///204.216.219.141:5000/api/user/register")
+            .url("http://204.216.219.141:5000/api/user/register")
             .post(requestBody)
             .build()
 
@@ -141,6 +163,13 @@ class RegisterActivity : AppCompatActivity() {
         })
     }
 
+    // Function to validate email format using regex
+    private fun isValidEmail(email: String): Boolean {
+        val emailPattern = "[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}"
+        return email.matches(Regex(emailPattern))
+    }
+
+    // Function to hash the password
     private fun hashPassword(password: String): String {
         return try {
             val digest = MessageDigest.getInstance("SHA-256")

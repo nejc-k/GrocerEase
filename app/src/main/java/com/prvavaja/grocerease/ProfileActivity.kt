@@ -81,7 +81,7 @@ class ProfileActivity : AppCompatActivity() {
 
         val client = OkHttpClient()
         val request = Request.Builder()
-            .url("http:///204.216.219.141:5000/api/user/profile")
+            .url("http://204.216.219.141:5000/api/user/profile")
             .header("Authorization", "Bearer $token")
             .get()
             .build()

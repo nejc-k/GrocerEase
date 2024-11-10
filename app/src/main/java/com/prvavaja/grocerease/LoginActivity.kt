@@ -29,6 +29,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var passwordEditText: EditText
     private lateinit var loginButton: Button
     private lateinit var registerLink: TextView
+    private lateinit var btnBack: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +39,7 @@ class LoginActivity : AppCompatActivity() {
         passwordEditText = findViewById(getResourceId("passwordLogin"))
         loginButton = findViewById(getResourceId("btnLogin"))
         registerLink = findViewById(R.id.registerLink)
+        btnBack = findViewById(getResourceId("btnBack"))
 
         registerLink.setOnClickListener {
             val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
@@ -46,6 +48,11 @@ class LoginActivity : AppCompatActivity() {
 
         loginButton.setOnClickListener {
             loginUser()
+        }
+
+        btnBack.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
         }
     }
 
@@ -81,7 +88,7 @@ class LoginActivity : AppCompatActivity() {
 
         val requestBody = jsonBody.toRequestBody(jsonMediaType)
         val request = Request.Builder()
-            .url("http:///204.216.219.141:5000/api/user/login")
+            .url("http://204.216.219.141:5000/api/user/login")
             .post(requestBody)
             .build()
 
@@ -114,7 +121,7 @@ class LoginActivity : AppCompatActivity() {
                 } else {
                     Log.e("LoginActivity", "Login failed: ${response.message}")
                     runOnUiThread {
-                        Toast.makeText(this@LoginActivity, "Login failed: ${response.message}", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@LoginActivity, "Wrong email or password", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
