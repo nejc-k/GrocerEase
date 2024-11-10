@@ -20,6 +20,8 @@ import okhttp3.Callback
 import okhttp3.Response
 import org.json.JSONObject
 import java.io.IOException
+import java.security.MessageDigest
+import java.security.NoSuchAlgorithmException
 
 class LoginActivity : AppCompatActivity() {
 
@@ -56,27 +58,30 @@ class LoginActivity : AppCompatActivity() {
             return
         }
 
+        // Hash the password before sending it to the backend
+        val hashedPassword = hashPassword(password)
+
         if (isInternetAvailable()) {
-            authenticateUserWithServer(email, password)
+            authenticateUserWithServer(email, hashedPassword)
         } else {
             authenticateUserWithSharedPrefs()
         }
     }
 
-    private fun authenticateUserWithServer(email: String, password: String) {
+    private fun authenticateUserWithServer(email: String, hashedPassword: String) {
         val client = OkHttpClient()
         val jsonMediaType = "application/json; charset=utf-8".toMediaType()
 
         val jsonBody = """
             {
                 "email": "$email",
-                "password": "$password"
+                "password": "$hashedPassword"
             }
         """.trimIndent()
 
         val requestBody = jsonBody.toRequestBody(jsonMediaType)
         val request = Request.Builder()
-            .url("http://10.0.2.2:5000/api/user/login")
+            .url("http:///204.216.219.141:5000/api/user/login")
             .post(requestBody)
             .build()
 
@@ -140,5 +145,22 @@ class LoginActivity : AppCompatActivity() {
 
     private fun getResourceId(name: String): Int {
         return resources.getIdentifier(name, "id", packageName)
+    }
+
+    // Hash the password using SHA-256
+    private fun hashPassword(password: String): String {
+        return try {
+            val digest = MessageDigest.getInstance("SHA-256")
+            val hashBytes = digest.digest(password.toByteArray(Charsets.UTF_8))
+            // Convert the bytes to a hexadecimal string
+            val stringBuilder = StringBuilder()
+            for (byte in hashBytes) {
+                stringBuilder.append(String.format("%02x", byte))
+            }
+            stringBuilder.toString()
+        } catch (e: NoSuchAlgorithmException) {
+            e.printStackTrace()
+            password // Return the password itself if hashing fails (not ideal)
+        }
     }
 }

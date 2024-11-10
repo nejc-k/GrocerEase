@@ -19,12 +19,12 @@ router.post('/register', async (req, res) => {
             return res.status(400).json({ error: "User already exists" });
         }
 
-        const hashedPassword = await bcrypt.hash(password, 10);
+        //const hashedPassword = await bcrypt.hash(password, 10);
 
         const user = new User({
             username,
             email,
-            password: hashedPassword,
+            password: password,
             profile_image,
         });
 
@@ -40,36 +40,43 @@ router.post('/login', async (req, res) => {
     console.log("LOGIN API..");
     console.log(req.body);
 
+    // Basic validation of input
     if (!email || !password) {
         return res.status(400).json({ error: "Please fill in all fields" });
     }
 
     try {
+        // Attempt to find user by email
         const user = await User.findOne({ email });
         if (!user) {
             return res.status(400).json({ error: "Invalid email or password" });
         }
 
-        const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) {
+        // Compare the provided password with the stored password (already hashed)
+        if (password !== user.password) {
             return res.status(400).json({ error: "Invalid email or password" });
         }
 
+        // Generate JWT token with the user ID and an expiry time of 1 hour
         const token = jwt.sign(
             { userId: user._id },
-            process.env.JWT_SECRET || 'your_secret_key',
+            process.env.JWT_SECRET || 'your_secret_key', // Ensure you have a secret key
             { expiresIn: '1h' }
         );
 
+        // Respond with the token and the user ID
         res.status(200).json({
             message: "Login successful",
             token,
             userId: user._id
         });
+
     } catch (error) {
-        res.status(500).json({ error: "Server error" });
+        console.error("Login error:", error);
+        res.status(500).json({ error: "Server error, please try again later" });
     }
 });
+
 
 router.get('/profile', async (req, res) => {
     console.log("profile API..");
@@ -103,5 +110,6 @@ router.get('/profile', async (req, res) => {
         res.status(500).json({ error: "Server error" });
     }
 });
+
 
 module.exports = router;

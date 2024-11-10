@@ -64,5 +64,6 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("com.squareup.okhttp3:okhttp:4.10.0")  // Updated OkHttp version
     implementation("org.json:json:20210307")
+    implementation("com.google.crypto.tink:tink-android:1.7.0")
 
 }

@@ -1,5 +1,4 @@
 package com.prvavaja.grocerease
-
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -17,6 +16,8 @@ import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.IOException
+import java.security.MessageDigest
+import java.security.NoSuchAlgorithmException
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -88,51 +89,71 @@ class RegisterActivity : AppCompatActivity() {
             return
         }
 
+        // Hash the password before saving it
+        val hashedPassword = hashPassword(password)
+
+        // Save data to SharedPreferences (hashed password)
         val sharedPreferences = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
         editor.putString("username", username)
         editor.putString("email", email)
-        editor.putString("password", password)
+        editor.putString("password", hashedPassword) // Store the hashed password
         editor.putString("profile_image", imageUri.toString())
         editor.apply()
 
+        // Create the HTTP client and request
         val client = OkHttpClient()
         val jsonMediaType = "application/json; charset=utf-8".toMediaType()
 
         val jsonBody = """
-    {
-        "username": "$username",
-        "email": "$email",
-        "password": "$password",
-        "profile_image": "${imageUri.toString()}"
-    }
-    """.trimIndent()
+            {
+                "username": "$username",
+                "email": "$email",
+                "password": "$hashedPassword", 
+                "profile_image": "${imageUri.toString()}"
+            }
+        """.trimIndent()
 
         val requestBody = jsonBody.toRequestBody(jsonMediaType)
-
+        Log.d("-----------------------------------------------",jsonBody)
         val request = Request.Builder()
-            .url("http://10.0.2.2:5000/api/user/register")
+            .url("http:///204.216.219.141:5000/api/user/register")
             .post(requestBody)
             .build()
 
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                Log.e("RegisterActivity", "Registration failed: ${e.message}") // Log error
+                Log.e("RegisterActivity", "Registration failed: ${e.message}")
             }
 
             override fun onResponse(call: Call, response: Response) {
                 if (response.isSuccessful) {
-                    Log.d("RegisterActivity", "Registration successful!") // Log success
+                    Log.d("RegisterActivity", "Registration successful!")
                     runOnUiThread {
                         val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
                         startActivity(intent)
                         finish()
                     }
                 } else {
-                    Log.e("RegisterActivity", "Registration failed: ${response.message}") // Log error
+                    Log.e("RegisterActivity", "Registration failed: ${response.message}")
                 }
             }
         })
     }
 
+    private fun hashPassword(password: String): String {
+        return try {
+            val digest = MessageDigest.getInstance("SHA-256")
+            val hashBytes = digest.digest(password.toByteArray(Charsets.UTF_8))
+            // Convert the bytes to a hexadecimal string
+            val stringBuilder = StringBuilder()
+            for (byte in hashBytes) {
+                stringBuilder.append(String.format("%02x", byte))
+            }
+            stringBuilder.toString()
+        } catch (e: NoSuchAlgorithmException) {
+            e.printStackTrace()
+            password // Return the password itself if hashing fails (not ideal)
+        }
+    }
 }

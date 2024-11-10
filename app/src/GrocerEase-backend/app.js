@@ -6,7 +6,7 @@ const authRoutes = require('./routes/user');
 
 const app = express();
 
-const MONGODB_URI = ''; // Vstavi mongodb link
+const MONGODB_URI = "mongodb+srv://user:IigChwsYtIpq8R21@cluster0.o50mfr6.mongodb.net/?retryWrites=true&w=majority&appName=Cluster"; // Vstavi mongodb link
 const PORT = 5000; 
 
 app.use(bodyParser.json());
