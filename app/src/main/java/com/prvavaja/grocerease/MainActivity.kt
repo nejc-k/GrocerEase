@@ -3,10 +3,8 @@ package com.prvavaja.grocerease
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.prvavaja.grocerease.databinding.ActivityMainBinding
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
+
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -16,16 +14,20 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.listButton.setOnClickListener{
-            val intent = Intent(this, ListsActivity::class.java)
+        binding.btnLogin.setOnClickListener {
+            val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
         }
 
-        binding.mapButton.setOnClickListener{
-            val intent = Intent(this, MapActivity::class.java)
+        binding.btnRegister.setOnClickListener {
+            val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
         }
 
-        val serialization=Serialization(this)
+        binding.btnGuest.setOnClickListener {
+            val intent = Intent(this, HomeActivity::class.java)
+            intent.putExtra("isGuest", true)  // Pass a flag to indicate guest status
+            startActivity(intent)
+        }
     }
 }

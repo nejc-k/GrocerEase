@@ -34,7 +34,7 @@ class ListsActivity : AppCompatActivity() {
     }
 
     fun backOnClick(view: View) {
-        val intent = Intent(this, MainActivity::class.java)
+        val intent = Intent(this, HomeActivity::class.java)
         startActivity(intent)
         finish()
     }
