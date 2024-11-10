@@ -2,6 +2,8 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     kotlin("plugin.serialization") version "1.9.0"
+
+    id("kotlin-kapt")
 }
 
 android {
@@ -53,4 +55,14 @@ dependencies {
     implementation("androidx.core:core-splashscreen:1.0.0")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
     implementation("org.osmdroid:osmdroid-android:6.1.17")
+
+
+    implementation("com.github.bumptech.glide:glide:4.15.0")  // Updated Glide version
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+    implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    implementation("com.squareup.okhttp3:okhttp:4.10.0")  // Updated OkHttp version
+    implementation("org.json:json:20210307")
+
 }

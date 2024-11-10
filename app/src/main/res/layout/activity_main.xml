@@ -27,10 +27,10 @@
         app:strokeWidth="5dp" />
 
     <Button
-        android:id="@+id/listButton"
+        android:id="@+id/btnLogin"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:text="List"
+        android:text="Login"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/guideline31"
         app:layout_constraintEnd_toStartOf="@+id/guideline29"
@@ -39,28 +39,16 @@
         app:layout_constraintTop_toTopOf="@+id/guideline30" />
 
     <Button
-        android:id="@+id/mapButton"
+        android:id="@+id/btnRegister"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:text="Map"
+        android:text="Register"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/guideline32"
         app:layout_constraintEnd_toStartOf="@+id/guideline29"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="@+id/guideline28"
         app:layout_constraintTop_toTopOf="@+id/guideline31" />
-
-    <Button
-        android:id="@+id/settingsButton"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:text="Settings"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline33"
-        app:layout_constraintEnd_toStartOf="@+id/guideline29"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="@+id/guideline28"
-        app:layout_constraintTop_toTopOf="@+id/guideline32" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline26"

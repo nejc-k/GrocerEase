@@ -82,7 +82,7 @@ class AddEditItemActivity : AppCompatActivity() {
         storeDD.adapter = ad
     }
 
-
+//TEST
     fun deleteOnClick(view: View) {
         app.currentList.removeItem(app.currentItem.uuid)
         val intent = Intent(this, SingleListActivity::class.java)
