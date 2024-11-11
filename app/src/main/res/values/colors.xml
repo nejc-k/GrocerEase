@@ -4,4 +4,10 @@
     <color name="white">#FFFFFFFF</color>
     <color name="yellow">#ECD71E</color>
     <color name="iconBack">#4F5252</color>
+
+    <color name="customYellow">#ffbc00</color>
+    <color name="lightYellow">#ffde80</color>
+
+    <color name="lightGreen">#80cd86</color>
+    <color name="darkGreen">#1fb65f</color>
 </resources>

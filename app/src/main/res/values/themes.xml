@@ -3,12 +3,14 @@
     <style name="Base.Theme.GrocerEase" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">@color/lightGreen</item> <!-- Main button color -->
+        <item name="android:colorBackground">@color/customYellow</item>
     </style>
 
     <style name="Theme.GrocerEase" parent="Base.Theme.GrocerEase" />
     
     <style name="Theme.App.SplashScreen" parent="Theme.SplashScreen">
-        <item name="windowSplashScreenBackground">@color/iconBack</item>
+        <item name="windowSplashScreenBackground">@color/customYellow</item>
         <item name="windowSplashScreenAnimatedIcon">@drawable/splash_screen_logo</item>
         <item name="postSplashScreenTheme">@style/Base.Theme.GrocerEase</item>
         <item name="windowSplashScreenAnimationDuration">700</item>

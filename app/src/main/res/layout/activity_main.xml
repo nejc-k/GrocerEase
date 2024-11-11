@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/yellow"
+    android:background="@drawable/background"
     tools:context=".MainActivity">
 
     <com.google.android.material.imageview.ShapeableImageView
@@ -13,7 +13,7 @@
         android:layout_height="200dp"
         android:padding="5dp"
         app:contentPadding="20dp"
-        android:background="@color/iconBack"
+        android:background="@color/customYellow"
         app:layout_constraintBottom_toTopOf="@+id/guideline27"
         app:layout_constraintEnd_toStartOf="@+id/guideline29"
         app:layout_constraintHorizontal_bias="0.5"
@@ -28,10 +28,13 @@
 
     <Button
         android:id="@+id/btnLogin"
-        android:layout_width="0dp"
+        android:layout_width="300dp"
         android:layout_height="0dp"
         android:text="Login"
         android:textSize="24sp"
+        android:drawablePadding="10dp"
+        android:drawableLeft="@drawable/login_icon"
+        android:paddingEnd="70dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline31"
         app:layout_constraintEnd_toStartOf="@+id/guideline35"
         app:layout_constraintHorizontal_bias="0.498"
@@ -40,10 +43,12 @@
 
     <Button
         android:id="@+id/btnRegister"
-        android:layout_width="0dp"
+        android:layout_width="300dp"
         android:layout_height="0dp"
         android:text="Register"
         android:textSize="24sp"
+        android:drawableLeft="@drawable/register_icon"
+        android:paddingEnd="46dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline32"
         app:layout_constraintEnd_toStartOf="@+id/guideline35"
         app:layout_constraintHorizontal_bias="0.498"
@@ -52,10 +57,11 @@
 
     <Button
         android:id="@+id/btnGuest"
-        android:layout_width="0dp"
+        android:layout_width="300dp"
         android:layout_height="0dp"
         android:text="Continue as guest"
-        android:textSize="24sp"
+        android:textSize="23sp"
+        android:drawableLeft="@drawable/guest_icon"
         app:layout_constraintBottom_toTopOf="@+id/guideline33"
         app:layout_constraintEnd_toStartOf="@+id/guideline35"
         app:layout_constraintHorizontal_bias="0.498"

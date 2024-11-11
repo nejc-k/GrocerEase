@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/yellow"
     tools:context=".MainActivity">
 
     <TextView
@@ -55,6 +54,7 @@
         android:layout_height="0dp"
         android:text="Login"
         android:textSize="24sp"
+        android:drawableLeft="@drawable/login_icon"
         app:layout_constraintBottom_toTopOf="@+id/guideline32"
         app:layout_constraintEnd_toStartOf="@+id/guideline29"
         app:layout_constraintHorizontal_bias="0.0"
@@ -68,6 +68,7 @@
         android:layout_height="0dp"
         android:text="Back"
         android:textSize="24sp"
+        android:drawableLeft="@drawable/back_icon"
         app:layout_constraintBottom_toTopOf="@+id/guideline33"
         app:layout_constraintEnd_toStartOf="@+id/guideline29"
         app:layout_constraintHorizontal_bias="0.0"
