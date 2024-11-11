@@ -51,6 +51,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="TextView"
+            android:textColor="#000000"
             android:textAlignment="center"
             android:textSize="24sp"
             app:layout_constraintBottom_toTopOf="@+id/guideline16"
@@ -60,6 +61,7 @@
 
         <TextView
             android:id="@+id/amountLabelTV"
+            android:textColor="@color/black"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="Amount:"
@@ -80,6 +82,7 @@
         <TextView
             android:id="@+id/amountTV"
             android:layout_width="0dp"
+            android:textColor="#000000"
             android:layout_height="wrap_content"
             android:text="TextView"
             android:textAlignment="viewStart"
