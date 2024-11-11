@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?android:windowBackground"
     tools:context=".MainActivity">
 
     <TextView
@@ -12,7 +13,6 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
         android:text="Profile"
-        android:textColor="@android:color/black"
         android:textSize="24sp"
         app:layout_constraintTop_toTopOf="@+id/guideline26"
         app:layout_constraintEnd_toStartOf="@+id/guideline29"
@@ -37,7 +37,6 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:text="Username: Username"
-        android:textColor="@color/black"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/guideline30"
         app:layout_constraintEnd_toStartOf="@+id/guideline29"
@@ -50,7 +49,6 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="100dp"
         android:text="Email: example@test.com"
-        android:textColor="@color/black"
         android:textSize="18sp"
         app:layout_constraintTop_toTopOf="@+id/guideline30"
         app:layout_constraintEnd_toStartOf="@+id/guideline29"

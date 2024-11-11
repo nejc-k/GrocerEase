@@ -5,4 +5,16 @@
         <item name="cornerFamily">rounded</item>
     </style>
 
+    <!-- Light Theme -->
+    <style name="AppTheme.Light" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="android:windowBackground">@drawable/background</item>
+        <item name="android:textColorPrimary">@color/lightText</item>
+    </style>
+
+    <!-- Dark Theme -->
+    <style name="AppTheme.Dark" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:windowBackground">@color/darkBackground</item>
+        <item name="android:textColorPrimary">@color/darkText</item>
+    </style>
+
 </resources>
