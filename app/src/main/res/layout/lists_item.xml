@@ -71,7 +71,7 @@
             android:id="@+id/numOfItmesLabelTV"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Number of Items:"
+            android:text="Num. of Items:"
             android:textAlignment="viewEnd"
             android:textColor="@color/black"
             app:layout_constraintBottom_toTopOf="@+id/guideline7"

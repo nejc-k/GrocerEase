@@ -8,20 +8,18 @@ import com.prvavaja.grocerease.databinding.ActivityHomeBinding
 
 class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
+    lateinit var app: MyApplication
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        app = application as MyApplication
 
-        val isGuest = intent.getBooleanExtra("isGuest", false)
-
-        if (isGuest) {
+        if (app.isGuest) {
             binding.btnProfile.visibility = View.GONE
-            binding.btnBack.visibility = View.VISIBLE
         } else {
             binding.btnProfile.visibility = View.VISIBLE
-            binding.btnBack.visibility = View.GONE
         }
 
         binding.listButton.setOnClickListener {

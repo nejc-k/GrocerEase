@@ -16,13 +16,11 @@ class ListsActivity : AppCompatActivity() {
 
     lateinit var app: MyApplication
     lateinit var myAdapter: MyAdapterLists
-    lateinit var serialization: Serialization // Declare it globally
+    lateinit var serialization: Serialization
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lists)
-        //val serialization = Serialization(this)
-        // Initialize the Serialization object here
         serialization = Serialization(this)
 
         app = application as MyApplication

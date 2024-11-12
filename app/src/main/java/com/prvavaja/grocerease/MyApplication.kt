@@ -8,6 +8,7 @@ class MyApplication : Application() {
     var listOfgrocerylists = ListOfGroceryLists()
     lateinit var currentList: GroceryList
     lateinit var currentItem: Item
+    var isGuest = false
 
     override fun onCreate() {
         super.onCreate()

@@ -30,10 +30,10 @@
         android:id="@+id/listButton"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:text="List"
-        android:textSize="24sp"
         android:drawableLeft="@drawable/list_icon"
-        android:paddingEnd="80dp"
+        android:text="List"
+        android:textAlignment="center"
+        android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/guideline31"
         app:layout_constraintEnd_toStartOf="@+id/guideline29"
         app:layout_constraintHorizontal_bias="0.498"
@@ -44,10 +44,10 @@
         android:id="@+id/mapButton"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:text="Map"
-        android:textSize="24sp"
         android:drawableLeft="@drawable/map_icon"
-        android:paddingEnd="68dp"
+        android:text="Map"
+        android:textAlignment="center"
+        android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/guideline32"
         app:layout_constraintEnd_toStartOf="@+id/guideline29"
         app:layout_constraintHorizontal_bias="0.498"
@@ -58,9 +58,10 @@
         android:id="@+id/settingsButton"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:text="Settings"
-        android:textSize="24sp"
         android:drawableLeft="@drawable/setings_icon"
+        android:text="Settings"
+        android:textAlignment="center"
+        android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/guideline33"
         app:layout_constraintEnd_toStartOf="@+id/guideline29"
         app:layout_constraintHorizontal_bias="0.498"
@@ -71,27 +72,30 @@
         android:id="@+id/btnProfile"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:drawableLeft="@drawable/icon_profile"
         android:text="Profile"
+        android:textAlignment="center"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/guideline34"
         app:layout_constraintEnd_toStartOf="@+id/guideline29"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline28"
-        app:layout_constraintTop_toTopOf="@+id/guideline33" />
+        app:layout_constraintTop_toTopOf="@+id/guideline33"
+        app:layout_constraintVertical_bias="1.0" />
 
     <Button
         android:id="@+id/btnBack"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:text="Back"
-        android:textSize="24sp"
         android:drawableLeft="@drawable/back_icon"
-        android:paddingEnd="60dp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline34"
+        android:text="Back"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline29"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="@+id/guideline28"
-        app:layout_constraintTop_toTopOf="@+id/guideline33" />
+        app:layout_constraintTop_toBottomOf="@+id/btnProfile" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline26"
@@ -112,14 +116,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.25" />
+        app:layout_constraintGuide_percent="0.18" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline29"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.75" />
+        app:layout_constraintGuide_percent="0.82" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline30"
