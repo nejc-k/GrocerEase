@@ -8,6 +8,7 @@ import android.widget.Toast
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.materialswitch.MaterialSwitch
 
+
 class SettingsActivity : AppCompatActivity() {
 
     private lateinit var switchTheme: MaterialSwitch
