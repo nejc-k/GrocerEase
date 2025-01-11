@@ -1,6 +1,5 @@
 package com.prvavaja.grocerease
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -9,6 +8,7 @@ import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -29,18 +29,16 @@ class ListsActivity : AppCompatActivity() {
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = myAdapter
+
+        val bottomNav: BottomNavigationView = findViewById(R.id.bottom_navigation)
+        setupBottomNav(this, bottomNav, app.isGuest)
     }
 
-    fun backOnClick(view: View) {
-        val intent = Intent(this, HomeActivity::class.java)
-        startActivity(intent)
-        finish()
-    }
 
-    fun addListOnClick(view: View){
+    fun addListOnClick(view: View) {
         val builder = AlertDialog.Builder(this)
         val inflater = layoutInflater
-        val dialogLayout = inflater.inflate(R.layout.add_list_dialog, null)
+        val dialogLayout = View.inflate(this, R.layout.add_list_dialog, null)
         val addListNameET = dialogLayout.findViewById<EditText>(R.id.addListNameET)
         val recyclerView: RecyclerView = this.findViewById(R.id.recyclerView)
 
