@@ -1,7 +1,7 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const User = require('../models/User');
+const UserRoutes = require('../models/User.model');
 const router = express.Router();
 
 router.post('/register', async (req, res) => {
@@ -14,14 +14,14 @@ router.post('/register', async (req, res) => {
     }
 
     try {
-        const existingUser = await User.findOne({ email });
+        const existingUser = await UserRoutes.findOne({ email });
         if (existingUser) {
-            return res.status(400).json({ error: "User already exists" });
+            return res.status(400).json({ error: "UserRoutes already exists" });
         }
 
         //const hashedPassword = await bcrypt.hash(password, 10);
 
-        const user = new User({
+        const user = new UserRoutes({
             username,
             email,
             password: password,
@@ -29,7 +29,7 @@ router.post('/register', async (req, res) => {
         });
 
         await user.save();
-        res.status(201).json({ message: "User registered successfully" });
+        res.status(201).json({ message: "UserRoutes registered successfully" });
     } catch (error) {
         res.status(500).json({ error: "Server error" });
     }
@@ -47,7 +47,7 @@ router.post('/login', async (req, res) => {
 
     try {
         // Attempt to find user by email
-        const user = await User.findOne({ email });
+        const user = await UserRoutes.findOne({ email });
         if (!user) {
             return res.status(400).json({ error: "Invalid email or password" });
         }
@@ -91,9 +91,9 @@ router.get('/profile', async (req, res) => {
         const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your_secret_key');
         const userId = decoded.userId;
 
-        const user = await User.findById(userId).select('-password');
+        const user = await UserRoutes.findById(userId).select('-password');
         if (!user) {
-            return res.status(404).json({ error: "User not found" });
+            return res.status(404).json({ error: "UserRoutes not found" });
         }
 
         const responseData = {
