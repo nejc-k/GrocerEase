@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">GrocerEase</string>
+    <string name="nav_list_title">List</string>
+    <string name="nav_map_title">Map</string>
+    <string name="nav_settings_title">Settings</string>
+    <string name="nav_profile_title">Profile</string>
     <string-array name="category_array">
         <item>Mercator</item>
         <item>Lidl</item>

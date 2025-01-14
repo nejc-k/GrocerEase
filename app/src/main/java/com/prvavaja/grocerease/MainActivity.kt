@@ -8,7 +8,6 @@ import com.prvavaja.grocerease.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private lateinit var serialization: Serialization
     lateinit var app: MyApplication
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,7 +28,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.btnGuest.setOnClickListener {
-            val intent = Intent(this, HomeActivity::class.java)
+            val intent = Intent(this, ListsActivity::class.java)
             app.isGuest=true  // Pass a flag to indicate guest status
             startActivity(intent)
         }
