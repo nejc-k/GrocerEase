@@ -2,6 +2,7 @@ package com.prvavaja.grocerease
 
 import android.app.Activity
 import android.content.Intent
+import android.widget.TextView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 fun setupBottomNav(activity: Activity, bottomNav: BottomNavigationView, is_guest: Boolean) {
