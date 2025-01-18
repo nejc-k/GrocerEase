@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.appbar.MaterialToolbar
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -26,7 +27,7 @@ class SingleListActivity : AppCompatActivity() {
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        val singleListTitleTV: TextView = this.findViewById(R.id.singleListTitleTV)
+        val topAppBar: MaterialToolbar = this.findViewById(R.id.topAppBar)
         if(storeName != "null"){
             val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
             val today = LocalDateTime.now().format(formatter)
@@ -40,7 +41,7 @@ class SingleListActivity : AppCompatActivity() {
                 }
             }
         }
-        singleListTitleTV.text = app.currentList.listName
+        topAppBar.title = app.currentList.listName
         recyclerView.adapter = myAdapter
     }
 
