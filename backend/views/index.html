@@ -58,6 +58,20 @@
             margin: 0;
             color: #666;
         }
+
+        .example {
+            background: #f9f9f9;
+            border-left: 4px solid #ccc;
+            padding: 10px;
+            margin-top: 10px;
+            font-family: monospace;
+            color: #555;
+        }
+
+        .example + p {
+            text-align: justify;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -97,6 +111,23 @@
         <li>
             <h2>POST /api/articles/query</h2>
             <p>Query articles by parameters given in the request body.</p>
+            <div class="example">
+                <strong>Example:</strong>
+                <pre>
+                    {
+                        "category": "breadAndPastry",
+                        "store": "Mercator",
+                        "min_price": 0.50,
+                        "max_price": 2.49,
+                        "title": "Žemlja"
+                    }
+                </pre>
+            </div>
+            <p>
+                Given example would query and return all articles form "Mercator" store under the "breadAndPastry"
+                category with price in range "0.50" and "2.49" and where title contains substring "Žemlje",
+                case-insensitive.
+            </p>
         </li>
     </ul>
     <h2>Stores Endpoints</h2>
