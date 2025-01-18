@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>API Endpoints</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        h2 {
+            margin-top: 50px;
+            color: #444;
+        }
+
+        p:not(li p) {
+            font-size: 1.2em;
+            text-align: center;
+            color: #444;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            background: #e2e2e2;
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 5px;
+        }
+
+        li h2 {
+            margin: 0 0 10px;
+            font-size: 1.2em;
+            color: #333;
+        }
+
+        li p {
+            margin: 0;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>API Endpoints</h1>
+    <p>Here are the available endpoints for the API:</p>
+    <h2>Articles Endpoints</h2>
+    <ul>
+        <li>
+            <h2>GET /api/articles</h2>
+            <p>Get all articles.</p>
+        </li>
+        <li>
+            <h2>GET /api/articles/:id</h2>
+            <p>Get a single article by ID.</p>
+        </li>
+        <li>
+            <h2>POST /api/articles</h2>
+            <p>Create a new article.</p>
+        </li>
+        <li>
+            <h2>PUT /api/articles/:id</h2>
+            <p>Update an article by ID.</p>
+        </li>
+        <li>
+            <h2>DELETE /api/articles/:id</h2>
+            <p>Delete an article by ID.</p>
+        </li>
+        <li>
+            <h2>GET /api/articles/store/:id</h2>
+            <p>Get all articles from the specified store.</p>
+        </li>
+        <li>
+            <h2>GET /api/articles/category/:category</h2>
+            <p>Get all articles from the specified category.</p>
+        </li>
+        <li>
+            <h2>POST /api/articles/query</h2>
+            <p>Query articles by parameters given in the request body.</p>
+        </li>
+    </ul>
+    <h2>Stores Endpoints</h2>
+    <ul>
+        <li>
+            <h2>GET /api/stores</h2>
+            <p>Get all stores.</p>
+        </li>
+        <li>
+            <h2>GET /api/stores/:id</h2>
+            <p>Get a single store by ID.</p>
+        </li>
+        <li>
+            <h2>POST /api/stores</h2>
+            <p>Create a new store.</p>
+        </li>
+        <li>
+            <h2>PUT /api/stores/:id</h2>
+            <p>Update a store by ID.</p>
+        </li>
+        <li>
+            <h2>DELETE /api/stores/:id</h2>
+            <p>Delete a store by ID.</p>
+        </li>
+    </ul>
+    <h2>Users Endpoints</h2>
+    <ul>
+        <li>
+            <h2>POST /api/users/register</h2>
+            <p>Register a new user.</p>
+        </li>
+        <li>
+            <h2>POST /api/users/login</h2>
+            <p>Login a user.</p>
+        </li>
+        <li>
+            <h2>POST /api/users/logout</h2>
+            <p>Logout a user.</p>
+        </li>
+        <li>
+            <h2>GET /api/users/profile</h2>
+            <p>Get user profile.</p>
+        </li>
+    </ul>
+</div>
+</body>
+</html>

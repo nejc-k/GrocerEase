@@ -6,6 +6,7 @@ const cors = require("cors");
 const authRoutes = require("./routes/User.routes");
 const articleRoutes = require("./routes/Article.routes");
 const storeRoutes = require("./routes/Store.routes");
+const path = require("node:path");
 
 const app = express();
 
@@ -19,6 +20,11 @@ app.use(cors());
 app.use("/api/user", authRoutes);
 app.use("/api/article", articleRoutes);
 app.use("/api/store", storeRoutes);
+
+// Default response with a welcome message and brief description of the API if user accessed the root URL
+app.get("/", (req, res) => {
+	res.sendFile(path.join(__dirname, "views", "index.html"));
+});
 
 mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
 	.then(() => console.log("MongoDB connected"))
