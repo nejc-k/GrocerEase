@@ -12,11 +12,12 @@ const app = express();
 const MONGODB_URI = process.env.MONGODB_URI;
 const PORT = process.env.PORT || 3000;
 
-app.use(bodyParser.json());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 app.use("/api/user", authRoutes);
-app.use("/api/articles", articleRoutes);
+app.use("/api/article", articleRoutes);
 app.use("/api/store", storeRoutes);
 
 mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })

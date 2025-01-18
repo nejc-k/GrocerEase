@@ -56,6 +56,40 @@ exports.getArticlesFromCategory = async (req, res) => {
 };
 
 /**
+ * @description Query articles by parameters given in the request body. This function is used to filter articles by
+ * 							category, store, price, and title in any combination of those specified parameters. If none are
+ * 							specified, all articles are returned and functions acts like getArticles function.
+ * @param {Request} req - Request object
+ * @param {Response} res - Response object
+ * @returns {Promise<void | Response>} - Promise object
+ * @example {
+ * 	"category": "breadAndPastry",
+ * 	"store": "Mercator",
+ * 	"max_price": 0.50,
+ * 	"min_price": 2.49,
+ * 	"title": "Žemlja"
+ * }
+ * */
+exports.queryArticles = async (req, res) => {
+	try {
+		const query = {};
+		if (req.body.category) query.category = req.body.category;
+		if (req.body.store) query.store = req.body.store.toLowerCase();
+		if (req.body.max_price) query.price = { $lte: req.body.max_price };
+		if (req.body.min_price) query.price = { $gte: req.body.min_price };
+		if (req.body.title) query.title = { $regex: new RegExp(req.body.title, "i") };
+		 
+		const articles = await Article.find(query);
+		if (!articles.length)
+			return res.status(404).json({ message: "Articles not found" });
+
+		res.status(200).json(articles);
+	} catch (error) {
+		res.status(500).json({ message: "Server error", error });
+	}
+};
+
+/**
  * @description Get a single article from the database
  * @param {Request} req - Request object
  * @param {Response} res - Response object

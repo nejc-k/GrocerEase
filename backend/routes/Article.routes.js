@@ -5,16 +5,17 @@ const {
 	getArticle,
 	updateArticle,
 	deleteArticle,
-	createArticle, getArticlesFromCategory, getArticlesFromStore,
+	createArticle, getArticlesFromCategory, getArticlesFromStore, queryArticles,
 } = require("../controllers/Article.controller");
 
 
-router.get("/", getArticles);
-router.get("/:id", getArticle);
-router.get("/store/:id", getArticlesFromStore);
-router.get("/category/:category", getArticlesFromCategory);
-router.post("/", createArticle);
-router.put("/:id", updateArticle);
-router.delete("/:id", deleteArticle);
+router.get("/", getArticles);																// Get all articles
+router.get("/:id", getArticle);															// Get specific article by provided ID
+router.get("/store/:id", getArticlesFromStore);							// Get all articles from the specified store
+router.get("/category/:category", getArticlesFromCategory);	// Get all articles from the specified category
+router.post("/query", queryArticles);												// Query articles by parameters given in the request body
+router.post("/", createArticle);															// Create a new article
+router.put("/:id", updateArticle);														// Update an article by provided ID
+router.delete("/:id", deleteArticle);												// Delete an article by provided ID
 
 module.exports = router;
