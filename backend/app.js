@@ -1,12 +1,14 @@
 require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
-const bodyParser = require("body-parser");
 const cors = require("cors");
 const authRoutes = require("./routes/User.routes");
 const articleRoutes = require("./routes/Article.routes");
 const storeRoutes = require("./routes/Store.routes");
 const path = require("node:path");
+const fs = require("fs");
+const https = require("https");
+const http = require("http");
 
 const app = express();
 
@@ -31,4 +33,24 @@ mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true 
 	.catch(err => console.error("MongoDB connection error:", err));
 
 
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+try {
+	const sslOptions = {
+		key: fs.readFileSync(process.env.PRIVATE_KEY_PATH),
+		cert: fs.readFileSync(process.env.CERTIFICATE_PATH),
+	};
+
+	https.createServer(sslOptions, app).listen(443, () => {
+		console.log("HTTPS server running on port 443");
+	});
+
+	http.createServer((req, res) => {
+		res.writeHead(301, { Location: `https://${req.headers.host}${req.url}` });
+		res.end();
+	}).listen(80, () => {
+		console.log("HTTP server redirecting to HTTPS on port 80");
+	});
+} catch (error) {
+	console.error("[ERROR]: HTTPS server error:", error);
+	console.info("[INFO]: Starting HTTP server on port 3000");
+	app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+}
