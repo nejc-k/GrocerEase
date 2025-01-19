@@ -141,7 +141,7 @@ class MapActivity : AppCompatActivity() {
 
     fun filterOnClick(view: View){
         if (selectedStore!="") {
-            val intent = Intent(this, SingleListActivity::class.java)
+            val intent = Intent(this, ListsActivity::class.java)
             intent.putExtra("STORE_NAME", binding.selectedStoreTV.text.toString())
             intent.putExtra("STORE", selectedStore)
             startActivity(intent)

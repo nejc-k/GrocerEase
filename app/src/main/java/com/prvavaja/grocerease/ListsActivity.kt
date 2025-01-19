@@ -1,5 +1,6 @@
 package com.prvavaja.grocerease
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -17,21 +18,33 @@ class ListsActivity : AppCompatActivity() {
     lateinit var app: MyApplication
     lateinit var myAdapter: MyAdapterLists
     lateinit var serialization: Serialization
+    lateinit var goesToStore : String
+    lateinit var selectedStore : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        goesToStore = intent.getStringExtra("STORE_NAME").toString()
+        selectedStore = intent.getStringExtra("STORE").toString()
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_lists)
+        if(goesToStore == "null") {
+            setContentView(R.layout.activity_lists)
+        }else {
+            setContentView(R.layout.activity_list_to_add_to)
+        }
         serialization = Serialization(this)
 
         app = application as MyApplication
-        myAdapter = MyAdapterLists(app)
+        myAdapter = MyAdapterLists(app,goesToStore,selectedStore)
         val recyclerView: RecyclerView = this.findViewById(R.id.recyclerView)
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = myAdapter
 
-        val bottomNav: BottomNavigationView = findViewById(R.id.bottom_navigation)
-        setupBottomNav(this, bottomNav, app.isGuest)
+
+        if(goesToStore == "null") {
+            val bottomNav: BottomNavigationView
+            bottomNav = findViewById(R.id.bottom_navigation)
+            setupBottomNav(this, bottomNav, app.isGuest)
+        }
     }
 
 
@@ -58,5 +71,10 @@ class ListsActivity : AppCompatActivity() {
             setView(dialogLayout)
             show()
         }
+    }
+
+    fun backToMap(view:View){
+        val intent = Intent(this, MapActivity::class.java)
+        startActivity(intent)
     }
 }
