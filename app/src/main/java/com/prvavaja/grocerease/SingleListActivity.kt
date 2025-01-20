@@ -31,22 +31,8 @@ class SingleListActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         val topAppBar: MaterialToolbar = this.findViewById(R.id.topAppBar)
-        if(storeName != "null"){
-            val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
-            val today = LocalDateTime.now().format(formatter)
-            val allLists = app.listOfgrocerylists.getAllLists()
-            app.currentList = GroceryList(storeName, today)
-            for(l in allLists){
-                for(i in l.items){
-                    if(i.store == storeName){
-                        app.currentList.addItem(i)
-                    }
-                }
-            }
-        }
         topAppBar.title = app.currentList.listName
         recyclerView.adapter = myAdapter
-        singleListTitleTV.text = app.currentList.listName
     }
 
 

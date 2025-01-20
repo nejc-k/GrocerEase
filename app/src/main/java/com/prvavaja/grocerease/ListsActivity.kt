@@ -23,6 +23,7 @@ class ListsActivity : AppCompatActivity() {
     lateinit var serialization: Serialization
     lateinit var goesToStore : String
     lateinit var selectedStore : String
+    lateinit var myAdapter : MyAdapterLists
 
     private lateinit var scrollableListContainer: LinearLayout
 
@@ -45,7 +46,7 @@ class ListsActivity : AppCompatActivity() {
           recyclerView.setHasFixedSize(true)
           recyclerView.layoutManager = LinearLayoutManager(this)
           recyclerView.adapter = myAdapter 
-        }esle{
+        }else{
           // Find the LinearLayout container for the scrollable list
           scrollableListContainer = findViewById(R.id.scrollableListContainer)
 
