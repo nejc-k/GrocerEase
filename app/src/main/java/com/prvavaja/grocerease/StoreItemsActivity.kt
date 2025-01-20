@@ -1,8 +1,10 @@
 package com.prvavaja.grocerease
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
@@ -38,6 +40,7 @@ class StoreItemsActivity : AppCompatActivity() {
         "10.12.2024", "20.10.2025", __v = 10
         )
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         storeName = intent.getStringExtra("STORE_NAME").toString()
         shortStoreName = intent.getStringExtra("STORE").toString()
@@ -56,21 +59,26 @@ class StoreItemsActivity : AppCompatActivity() {
         adapter = StoreItemsAdapter(itemList, ::handleAddItem)
         recyclerView.adapter = adapter
 
+
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 currentSearch = query.toString()
+                hideKeyboard()
                 postRequest()
-                val inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-                currentFocus?.let {
-                    inputMethodManager.hideSoftInputFromWindow(it.windowToken, 0)
-                }
                 return true
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
+                currentSearch = newText.toString()
+                if (currentSearch.isEmpty()) {
+                    // Optionally trigger search dynamically for empty input
+                    postRequest()
+                }
                 return true
             }
         })
+
+
 
         val categorySpinner = findViewById<Spinner>(R.id.categorySpinner)
 
@@ -89,9 +97,15 @@ class StoreItemsActivity : AppCompatActivity() {
                 categoryFilter = selectedCategory
                 postRequest()
             }
-            override fun onNothingSelected(parent: AdapterView<*>) {}
+            override fun onNothingSelected(parent: AdapterView<*>) {
+
+            }
         }
 
+        categorySpinner.setOnTouchListener { _, _ ->
+            hideKeyboard()
+            false // Allow normal touch behavior
+        }
         postRequest()
     }
 
@@ -117,15 +131,20 @@ class StoreItemsActivity : AppCompatActivity() {
 
         val requestBody = json.toString().toRequestBody("application/json; charset=utf-8".toMediaType())
 
+        //should movement through pages
+        val call = apiService.postItem(page = 1, requestBody = requestBody)
+
         // Fetch items
-        apiService.postItem(requestBody).enqueue(object : Callback<List<BackendItem>> {
+        call.enqueue(object : Callback<List<BackendItem>> {
             override fun onResponse(call: Call<List<BackendItem>>, response: Response<List<BackendItem>>) {
                 if (response.isSuccessful) {
                     itemList.clear()
-                    itemList.addAll(response.body()?.take(40) ?: emptyList())
+                    itemList.addAll(response.body() ?: emptyList())
                     adapter.updateList(itemList)
                 }
                 else {
+                    itemList.clear()
+                    adapter.updateList(itemList)
                     Log.e("StoreItemsActivity", "API call failed: ${response.errorBody()?.string()}")
                 }
             }
@@ -155,6 +174,14 @@ class StoreItemsActivity : AppCompatActivity() {
         startActivity(intent)
         finish()
     }
+
+    fun hideKeyboard() {
+        val inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        currentFocus?.let {
+            inputMethodManager.hideSoftInputFromWindow(it.windowToken, 0)
+        }
+    }
+
 
 
 }
