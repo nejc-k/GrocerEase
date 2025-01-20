@@ -1,12 +1,20 @@
 {
-  "name": "shoppingapp-backend",
+  "name": "grocer-ease-backend",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "dev": "nodemon app.js"
   },
-  "keywords": [],
+  "jest": {
+    "testEnvironment": "node"
+  },
+  "keywords": [
+    "Grocery",
+    "Shopping",
+    "App",
+    "Grocer-Ease"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
@@ -21,5 +29,9 @@
     "mongoose": "^8.7.3",
     "nodemon": "^3.1.9"
   },
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "supertest": "^7.0.0"
+  }
 }
