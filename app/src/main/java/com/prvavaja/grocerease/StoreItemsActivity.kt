@@ -33,15 +33,14 @@ class StoreItemsActivity : AppCompatActivity() {
     private var categoryFilter = "No Category Filter"
     private lateinit var adapter: StoreItemsAdapter
     private val itemList = mutableListOf<BackendItem>()
-    private val itemExample = BackendItem(_id = Id("12345"),"Title",
+    private val itemExample = BackendItem(_id =  "12345","Title",
         10.0,"SomeURL",10.0,"Catasda","Mercator",
-        DateInfo("10.12.2024"), DateInfo("20.10.2025"), __v = 10
+        "10.12.2024", "20.10.2025", __v = 10
         )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         storeName = intent.getStringExtra("STORE_NAME").toString()
         shortStoreName = intent.getStringExtra("STORE").toString()
-        itemList.add(itemExample)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_store_items)
         val singleListTitleTV: TextView = this.findViewById(R.id.storeListTitleTV)
@@ -98,7 +97,7 @@ class StoreItemsActivity : AppCompatActivity() {
 
     private fun postRequest(){
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://10.0.2.2:5000")
+            .baseUrl("https://grocerease.ddns.net/api/")
             .addConverterFactory(GsonConverterFactory.create())  // Use Gson for parsing
             .build()
         apiService = retrofit.create(ApiService::class.java)
@@ -123,7 +122,7 @@ class StoreItemsActivity : AppCompatActivity() {
             override fun onResponse(call: Call<List<BackendItem>>, response: Response<List<BackendItem>>) {
                 if (response.isSuccessful) {
                     itemList.clear()
-                    itemList.addAll(response.body() ?: emptyList())
+                    itemList.addAll(response.body()?.take(40) ?: emptyList())
                     adapter.updateList(itemList)
                 }
                 else {

@@ -72,7 +72,8 @@
         app:layout_constraintTop_toBottomOf="@+id/itemsSearchView"
         app:layout_constraintBottom_toTopOf="@+id/btnAdd"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:scrollbars="vertical"/>
 
     <!-- Button at the bottom -->
     <Button
