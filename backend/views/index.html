@@ -73,6 +73,8 @@
             color: #555;
         }
 
+        .example pre { overflow: auto; }
+
         .example + p {
             text-align: justify;
             margin-top: 10px;
@@ -86,35 +88,35 @@
     <h2>Articles Endpoints</h2>
     <ul>
         <li>
-            <h2>GET /api/articles</h2>
+            <h2>GET /api/article</h2>
             <p>Get all articles.</p>
         </li>
         <li>
-            <h2>GET /api/articles/:id</h2>
+            <h2>GET /api/article/:id</h2>
             <p>Get a single article by ID.</p>
         </li>
         <li>
-            <h2>POST /api/articles</h2>
+            <h2>POST /api/article</h2>
             <p>Create a new article.</p>
         </li>
         <li>
-            <h2>PUT /api/articles/:id</h2>
+            <h2>PUT /api/article/:id</h2>
             <p>Update an article by ID.</p>
         </li>
         <li>
-            <h2>DELETE /api/articles/:id</h2>
+            <h2>DELETE /api/article/:id</h2>
             <p>Delete an article by ID.</p>
         </li>
         <li>
-            <h2>GET /api/articles/store/:id</h2>
+            <h2>GET /api/article/store/:id</h2>
             <p>Get all articles from the specified store.</p>
         </li>
         <li>
-            <h2>GET /api/articles/category/:category</h2>
+            <h2>GET /api/article/category/:category</h2>
             <p>Get all articles from the specified category.</p>
         </li>
         <li>
-            <h2>POST /api/articles/query</h2>
+            <h2>POST /api/article/query</h2>
             <p>Query articles by parameters given in the request body.</p>
             <div class="example">
                 <strong>Example:</strong>

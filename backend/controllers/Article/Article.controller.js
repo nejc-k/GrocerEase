@@ -1,5 +1,5 @@
 const { Request, Response } = require("express");
-const Article = require("../models/Article.model");
+const Article = require("../../models/Article.model");
 
 /**
  * @description Get all articles from the database
@@ -72,14 +72,18 @@ exports.getArticlesFromCategory = async (req, res) => {
  * */
 exports.queryArticles = async (req, res) => {
 	try {
+		const page = req.query.page || 1;
+		const pageSize = 50;
 		const query = {};
 		if (req.body.category) query.category = req.body.category;
 		if (req.body.store) query.store = req.body.store.toLowerCase();
 		if (req.body.max_price) query.price = { $lte: req.body.max_price };
 		if (req.body.min_price) query.price = { $gte: req.body.min_price };
 		if (req.body.title) query.title = { $regex: new RegExp(req.body.title, "i") };
-		 
-		const articles = await Article.find(query);
+
+		const articles = await Article.find(query)
+			.skip((page - 1) * pageSize)
+			.limit(pageSize);
 		if (!articles.length)
 			return res.status(404).json({ message: "Articles not found" });
 

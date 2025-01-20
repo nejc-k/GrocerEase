@@ -6,7 +6,7 @@ const {
 	updateArticle,
 	deleteArticle,
 	createArticle, getArticlesFromCategory, getArticlesFromStore, queryArticles,
-} = require("../controllers/Article.controller");
+} = require("../controllers/Article/Article.controller");
 
 
 router.get("/", getArticles);																// Get all articles
