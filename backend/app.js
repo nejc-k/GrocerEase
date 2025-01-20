@@ -6,9 +6,6 @@ const authRoutes = require("./routes/User.routes");
 const articleRoutes = require("./routes/Article.routes");
 const storeRoutes = require("./routes/Store.routes");
 const path = require("node:path");
-const fs = require("fs");
-const https = require("https");
-const http = require("http");
 
 const app = express();
 
