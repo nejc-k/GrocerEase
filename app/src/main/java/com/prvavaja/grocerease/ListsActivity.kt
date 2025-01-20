@@ -21,24 +21,45 @@ class ListsActivity : AppCompatActivity() {
 
     lateinit var app: MyApplication
     lateinit var serialization: Serialization
+    lateinit var goesToStore : String
+    lateinit var selectedStore : String
+    lateinit var myAdapter : MyAdapterLists
 
     private lateinit var scrollableListContainer: LinearLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        goesToStore = intent.getStringExtra("STORE_NAME").toString()
+        selectedStore = intent.getStringExtra("STORE").toString()
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_lists)
+        if(goesToStore == "null") {
+            setContentView(R.layout.activity_lists)
+        }else {
+            setContentView(R.layout.activity_list_to_add_to)
+        }
         serialization = Serialization(this)
 
         app = application as MyApplication
+        
+        if(goesToStore != "null"){
+          myAdapter = MyAdapterLists(app,goesToStore,selectedStore)
+          val recyclerView: RecyclerView = this.findViewById(R.id.recyclerView)
+          recyclerView.setHasFixedSize(true)
+          recyclerView.layoutManager = LinearLayoutManager(this)
+          recyclerView.adapter = myAdapter 
+        }else{
+          // Find the LinearLayout container for the scrollable list
+          scrollableListContainer = findViewById(R.id.scrollableListContainer)
 
-        // Find the LinearLayout container for the scrollable list
-        scrollableListContainer = findViewById(R.id.scrollableListContainer)
+          // Populate existing lists
+          populateLists()
+        }
 
-        // Populate existing lists
-        populateLists()
 
-        val bottomNav: BottomNavigationView = findViewById(R.id.bottom_navigation)
-        setupBottomNav(this, bottomNav, app.isGuest)
+        if(goesToStore == "null") {
+            val bottomNav: BottomNavigationView
+            bottomNav = findViewById(R.id.bottom_navigation)
+            setupBottomNav(this, bottomNav, app.isGuest)
+        }
     }
 
     private fun populateLists() {
@@ -83,6 +104,11 @@ class ListsActivity : AppCompatActivity() {
         }
     }
 
+    fun backToMap(view:View){
+        val intent = Intent(this, MapActivity::class.java)
+        startActivity(intent)
+    }
+    
     private fun addListItem(index: Int, listName: String, createdDate: String, itemCount: Int) {
         val listItemView = layoutInflater.inflate(R.layout.lists_item, scrollableListContainer, false)
 
