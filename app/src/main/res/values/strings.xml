@@ -1,9 +1,26 @@
 <resources>
     <string name="app_name">GrocerEase</string>
+    <string name="nav_list_title">List</string>
+    <string name="nav_map_title">Map</string>
+    <string name="nav_settings_title">Settings</string>
+    <string name="nav_profile_title">Profile</string>
     <string-array name="category_array">
         <item>Mercator</item>
         <item>Lidl</item>
         <item>Hofer</item>
         <item>Spar</item>
+    </string-array>
+    <string-array name="categories">
+        <item>No Category Filter</item>
+        <item>breadAndPastry</item>
+        <item>meatAndFish</item>
+        <item>fruitAndVegetables</item>
+        <item>drinks</item>
+        <item>frozen</item>
+        <item>snacks</item>
+        <item>dairy</item>
+        <item>pets</item>
+        <item>pantry</item>
+        <item>misc</item>
     </string-array>
 </resources>

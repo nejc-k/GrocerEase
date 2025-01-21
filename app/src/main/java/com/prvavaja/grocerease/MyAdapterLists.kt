@@ -11,7 +11,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 
-class MyAdapterLists(val app: MyApplication) :
+class MyAdapterLists(val app: MyApplication, val goesToStore: String, val StoreName: String) :
     RecyclerView.Adapter<MyAdapterLists.MyViewHolder>() {
     class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val listNameTV: TextView
@@ -46,7 +46,12 @@ class MyAdapterLists(val app: MyApplication) :
     }
 
     private fun showGroceryList(context: Context, position: Int) {
-        val intent = Intent(context, SingleListActivity::class.java)
+        var intent = Intent(context, SingleListActivity::class.java)
+        if(goesToStore != "null"){
+            intent = Intent(context, StoreItemsActivity::class.java)
+            intent.putExtra("STORE_NAME", goesToStore)
+            intent.putExtra("STORE", StoreName)
+        }
         app.currentList = app.listOfgrocerylists.getAllLists()[position]
         context.startActivity(intent)
     }

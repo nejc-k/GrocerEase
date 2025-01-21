@@ -1,24 +1,24 @@
 package com.prvavaja.grocerease
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import android.widget.Switch
 import android.widget.TextView
 import android.widget.Toast
-import android.view.View
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.materialswitch.MaterialSwitch
+
 
 class SettingsActivity : AppCompatActivity() {
 
-    private lateinit var switchTheme: Switch
+    private lateinit var switchTheme: MaterialSwitch
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.settings_layout)
 
         // Initialize UI components
-        val switchNotifications: Switch = findViewById(R.id.switch_notifications)
+        val switchNotifications: MaterialSwitch = findViewById(R.id.switch_notifications)
         switchTheme = findViewById(R.id.switch_theme)
         val systemInfoText: TextView = findViewById(R.id.system_info_text)
 
@@ -39,6 +39,9 @@ class SettingsActivity : AppCompatActivity() {
 
         // Display system information
         systemInfoText.text = getSystemInfo()
+
+        val bottomNav: BottomNavigationView = findViewById(R.id.bottom_navigation)
+        setupBottomNav(this, bottomNav, (application as MyApplication).isGuest)
     }
 
     private fun toggleDarkMode(isEnabled: Boolean) {
@@ -60,11 +63,5 @@ class SettingsActivity : AppCompatActivity() {
         val versionName = packageManager.getPackageInfo(packageName, 0).versionName
 
         return "API Level: $apiLevel\nDevice: $device\nModel: $model\nApp Version: $versionName"
-    }
-
-    fun backOnClick(view: View) {
-        val intent = Intent(this, HomeActivity::class.java)
-        startActivity(intent)
-        finish()
     }
 }

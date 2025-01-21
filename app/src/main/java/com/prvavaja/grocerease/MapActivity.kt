@@ -5,7 +5,6 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import com.prvavaja.grocerease.databinding.ActivityMainBinding
 import com.prvavaja.grocerease.databinding.ActivityMapBinding
 import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
@@ -16,6 +15,8 @@ import android.widget.ArrayAdapter
 import android.widget.AdapterView
 import android.widget.Spinner
 import android.widget.Toast
+import androidx.core.content.res.ResourcesCompat
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MapActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMapBinding //ADD THIS LINE
@@ -83,7 +84,8 @@ class MapActivity : AppCompatActivity() {
         categorySpinner.adapter = adapter
 
 
-
+        val bottomNav: BottomNavigationView = findViewById(R.id.bottom_navigation)
+        setupBottomNav(this, bottomNav, (application as MyApplication).isGuest)
 
         // Set up osmdroid configuration
         Configuration.getInstance().load(applicationContext,this.getPreferences(Context.MODE_PRIVATE))
@@ -91,7 +93,7 @@ class MapActivity : AppCompatActivity() {
         mapView.setTileSource(TileSourceFactory.MAPNIK)
         mapView.setMultiTouchControls(true)
         val mapController = mapView.controller
-        mapController.setZoom(14)
+        mapController.setZoom(14.0)
         val defaultLocation = GeoPoint(46.5547, 15.6459) // Adjust coordinates as needed
         mapController.setCenter(defaultLocation)
 
@@ -102,9 +104,9 @@ class MapActivity : AppCompatActivity() {
                 curentStore=selectedCategory
                 // Update the markers based on the selected category
                 displayMarkers(selectedCategory)
-                mapController.setZoom(14)
-                val defaultLocation = GeoPoint(46.5547, 15.6459) // Adjust coordinates as needed
-                mapController.setCenter(defaultLocation)
+                mapController.setZoom(14.0)
+                val newLocation = GeoPoint(46.5547, 15.6459) // Adjust coordinates as needed, why is this hard coded?
+                mapController.setCenter(newLocation)
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {}
@@ -139,7 +141,7 @@ class MapActivity : AppCompatActivity() {
 
     fun filterOnClick(view: View){
         if (selectedStore!="") {
-            val intent = Intent(this, SingleListActivity::class.java)
+            val intent = Intent(this, ListsActivity::class.java)
             intent.putExtra("STORE_NAME", binding.selectedStoreTV.text.toString())
             intent.putExtra("STORE", selectedStore)
             startActivity(intent)
@@ -147,12 +149,6 @@ class MapActivity : AppCompatActivity() {
             Toast.makeText(this, "You need to choose a store on the map.", Toast.LENGTH_SHORT).show()
         }
 
-    }
-
-    fun backOnClick(view: View) {
-        val intent = Intent(this, HomeActivity::class.java)
-        startActivity(intent)
-        finish()
     }
 
     fun displayMarkers(category: String) {
@@ -170,7 +166,7 @@ class MapActivity : AppCompatActivity() {
             marker.position = markerData.position
             marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
             marker.title = markerData.title
-            marker.icon=resources.getDrawable(R.drawable.marker_map_icon, null) // Use your custom icon here
+            marker.icon=ResourcesCompat.getDrawable(resources, R.drawable.marker_map_icon, null) // Use your custom icon here
             // Set up a click listener for the marker
             marker.setOnMarkerClickListener { _, _ ->
                 // Update the TextView with the marker's title

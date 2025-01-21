@@ -1,24 +1,33 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const authRoutes = require('./routes/user');
+require("dotenv").config();
+const express = require("express");
+const mongoose = require("mongoose");
+const cors = require("cors");
+const authRoutes = require("./routes/User.routes");
+const articleRoutes = require("./routes/Article.routes");
+const storeRoutes = require("./routes/Store.routes");
+const path = require("node:path");
 
 const app = express();
 
-const MONGODB_URI = "mongodb+srv://user:IigChwsYtIpq8R21@cluster0.o50mfr6.mongodb.net/?retryWrites=true&w=majority&appName=Cluster"; // Vstavi mongodb link
+const MONGODB_URI = process.env.MONGODB_URI;
+const PORT = process.env.PORT || 3000;
 
-const PORT = 5000; 
-
-app.use(bodyParser.json());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
-app.use('/api/user', authRoutes);
+app.use("/api/user", authRoutes);
+app.use("/api/article", articleRoutes);
+app.use("/api/store", storeRoutes);
+
+// Default response with a welcome message and brief description of the API if user accessed the root URL
+app.get("/", (req, res) => {
+	res.sendFile(path.join(__dirname, "views", "index.html"));
+});
 
 mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => console.log("MongoDB connected"))
-    .catch(err => console.error("MongoDB connection error:", err));
+	.then(() => console.log("[INFO] MongoDB connected"))
+	.catch(err => console.error("[ERROR] MongoDB connection error:", err));
 
 
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-24
+app.listen(PORT, () => console.log(`[INFO] Server running on port ${PORT}`));

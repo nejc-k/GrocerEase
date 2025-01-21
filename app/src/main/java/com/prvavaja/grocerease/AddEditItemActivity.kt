@@ -55,7 +55,7 @@ class AddEditItemActivity : AppCompatActivity() {
         setContentView(R.layout.activity_add_edit_item)
 
         app = application as MyApplication
-        myAdapter = MyAdapterLists(app)
+        myAdapter = MyAdapterLists(app,"null", "null")
         serialization = Serialization(this)
         val itemTitleTV = findViewById<TextView>(R.id.itemTitleTV)
         val itemNameET = findViewById<TextView>(R.id.itemNameET)

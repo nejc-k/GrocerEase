@@ -35,11 +35,11 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        emailEditText = findViewById(getResourceId("emailLogin"))
-        passwordEditText = findViewById(getResourceId("passwordLogin"))
-        loginButton = findViewById(getResourceId("btnLogin"))
+        emailEditText = findViewById(R.id.emailLogin)
+        passwordEditText = findViewById(R.id.passwordLogin)
+        loginButton = findViewById(R.id.btnLogin)
         registerLink = findViewById(R.id.registerLink)
-        btnBack = findViewById(getResourceId("btnBack"))
+        btnBack = findViewById(R.id.btnBack)
 
         registerLink.setOnClickListener {
             val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
@@ -113,7 +113,7 @@ class LoginActivity : AppCompatActivity() {
                         sharedPreferences.edit().putString("auth_token", token).apply()
 
                         runOnUiThread {
-                            val intent = Intent(this@LoginActivity, HomeActivity::class.java)
+                            val intent = Intent(this@LoginActivity, ListsActivity::class.java)
                             startActivity(intent)
                             finish()
                         }
@@ -148,10 +148,6 @@ class LoginActivity : AppCompatActivity() {
         val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val capabilities = connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
         return capabilities != null && capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
-    }
-
-    private fun getResourceId(name: String): Int {
-        return resources.getIdentifier(name, "id", packageName)
     }
 
     // Hash the password using SHA-256
