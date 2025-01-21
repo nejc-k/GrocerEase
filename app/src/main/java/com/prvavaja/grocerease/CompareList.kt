@@ -135,6 +135,9 @@ class CompareList : AppCompatActivity() {
 
         val contentType = "application/json".toMediaTypeOrNull()
         val requestBody = jsonString.toRequestBody(contentType)
+        val saveMoneyCard = findViewById<CardView>(R.id.save_money_card)
+        val saveMoneyTextView = findViewById<TextView>(R.id.save_money_text)
+
 
         apiService.comparePrices(requestBody).enqueue(object : Callback<ApiResponseCompareItems> {
             override fun onResponse(
@@ -153,10 +156,7 @@ class CompareList : AppCompatActivity() {
                         Log.d("ITEMS CAST", itemList.toString())
 //                        itemAdapter.notifyDataSetChanged()
                     }
-                    val saveMoneyCard = findViewById<CardView>(R.id.save_money_card)
-                    val saveMoneyTextView = findViewById<TextView>(R.id.save_money_text)
-
-                    var number = 0.0;
+                                       var number = 0.0;
                     if (items != null && items.isNotEmpty()) {
                         for (item in itemList) {
 
@@ -181,17 +181,24 @@ class CompareList : AppCompatActivity() {
                         saveMoneyCard.visibility = View.VISIBLE
                     }
 
-
                     Log.e("RESPONSE", store.toString())
                     Log.e("ITEMS", itemList.toString())
 
                 } else {
+                    val message =
+                        "<b>Some of the items were not found in the database.</b>"
+                    saveMoneyTextView.text = HtmlCompat.fromHtml(message, HtmlCompat.FROM_HTML_MODE_LEGACY)
+                    saveMoneyCard.visibility = View.VISIBLE
                     println("Failed to fetch items: ${response.code()}")
                 }
             }
 
             override fun onFailure(call: Call<ApiResponseCompareItems>, t: Throwable) {
-                Log.e("ERROR", t.message.toString())
+
+                val message =
+                    "<b>Unknown server error</b>"
+                saveMoneyTextView.text = HtmlCompat.fromHtml(message, HtmlCompat.FROM_HTML_MODE_LEGACY)
+                saveMoneyCard.visibility = View.VISIBLE
             }
         })
     }
