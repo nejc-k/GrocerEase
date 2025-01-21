@@ -29,7 +29,6 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var passwordEditText: EditText
     private lateinit var loginButton: Button
     private lateinit var registerLink: TextView
-    private lateinit var btnBack: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,7 +38,6 @@ class LoginActivity : AppCompatActivity() {
         passwordEditText = findViewById(R.id.passwordLogin)
         loginButton = findViewById(R.id.btnLogin)
         registerLink = findViewById(R.id.registerLink)
-        btnBack = findViewById(R.id.btnBack)
 
         registerLink.setOnClickListener {
             val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
@@ -48,11 +46,6 @@ class LoginActivity : AppCompatActivity() {
 
         loginButton.setOnClickListener {
             loginUser()
-        }
-
-        btnBack.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
         }
     }
 
