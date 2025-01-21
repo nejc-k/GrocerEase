@@ -21,7 +21,7 @@ class MyAdapterItems(val app: MyApplication) :
         val listItem: ListItem
         val checkBox: MaterialCheckBox
         init{
-            listItem = itemView.findViewById(R.id.itemId)
+            listItem = itemView.findViewById(R.id.listItemId)
             checkBox = itemView.findViewById(R.id.checkBoxIV)
         }
     }
@@ -37,7 +37,8 @@ class MyAdapterItems(val app: MyApplication) :
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val current = app.currentList.items[position]
         holder.listItem.headline.text = current.itemName
-        holder.listItem.supportText.text = current.amount
+        val text = "Amount: ${current.amount}"
+        holder.listItem.supportText.text = text
         holder.checkBox.isChecked = current.checked
 
 

@@ -31,7 +31,6 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var confirmPasswordEditText: EditText
     private lateinit var registerButton: Button
     private lateinit var loginLink: TextView
-    private lateinit var btnBack: Button
     private var imageUri: Uri? = null
 
     private lateinit var pickMedia: ActivityResultLauncher<PickVisualMediaRequest>
@@ -47,7 +46,6 @@ class RegisterActivity : AppCompatActivity() {
         confirmPasswordEditText = findViewById(R.id.confirmPasswordRegister)
         registerButton = findViewById(R.id.btnRegister)
         loginLink = findViewById(R.id.loginLink)
-        btnBack = findViewById(R.id.btnBack)
 
         loginLink.setOnClickListener {
             val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
@@ -71,11 +69,6 @@ class RegisterActivity : AppCompatActivity() {
 
         registerButton.setOnClickListener {
             registerUser()
-        }
-
-        btnBack.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
         }
     }
 

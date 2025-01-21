@@ -10,17 +10,14 @@ import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import net.nicbell.materiallists.ListItem
 
 class MyAdapterLists(val app: MyApplication) :
     RecyclerView.Adapter<MyAdapterLists.MyViewHolder>() {
     class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val listNameTV: TextView
-        val numOfItemsTV: TextView
-        val createdTV: TextView
+        val listItem: ListItem
         init{
-            listNameTV = itemView.findViewById(R.id.listNameTV)
-            numOfItemsTV = itemView.findViewById(R.id.numOfItemsTV)
-            createdTV = itemView.findViewById(R.id.createdTV)
+            listItem = itemView.findViewById(R.id.listItemId)
         }
     }
 
@@ -32,9 +29,9 @@ class MyAdapterLists(val app: MyApplication) :
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val current = app.listOfgrocerylists.getAllLists()[position]
-        holder.listNameTV.text = current.listName
-        holder.numOfItemsTV.text = current.items.size.toString()
-        holder.createdTV.text = current.date
+        holder.listItem.headline.text = current.listName
+        val text = "Number of items: ${current.items.size.toString()}\nCreated: ${current.date}"
+        holder.listItem.supportText.text = text
 
         holder.itemView.setOnLongClickListener {
             showDeleteConfirmationDialog(holder.itemView.context, position)
