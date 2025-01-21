@@ -10,21 +10,20 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.checkbox.MaterialCheckBox
+import net.nicbell.materiallists.ListItem
 
 class MyAdapterItems(val app: MyApplication) :
 
     RecyclerView.Adapter<MyAdapterItems.MyViewHolder>() {
 
     class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val itemNameTV: TextView
-        val amountTV: TextView
-        val checkBoxIV: ImageView
+        val listItem: ListItem
+        val checkBox: MaterialCheckBox
         init{
-            itemNameTV = itemView.findViewById(R.id.itemNameTV)
-            amountTV = itemView.findViewById(R.id.amountTV)
-            checkBoxIV = itemView.findViewById(R.id.checkBoxIV)
+            listItem = itemView.findViewById(R.id.listItemId)
+            checkBox = itemView.findViewById(R.id.checkBoxIV)
         }
-
     }
 
 
@@ -37,17 +36,16 @@ class MyAdapterItems(val app: MyApplication) :
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val current = app.currentList.items[position]
-        holder.itemNameTV.text = current.title
-        holder.amountTV.text = current.amount
+        holder.listItem.headline.text = current.title
+        val text = "Amount: ${current.amount}"
+        holder.listItem.supportText.text = text
+        holder.checkBox.isChecked = current.checked
 
-        holder.checkBoxIV.setImageResource(
-            if (current.checked) R.drawable.checkbox_circle else R.drawable.checkbox_blank_circle
-        )
 
-        holder.itemView.setOnLongClickListener {
+        holder.checkBox.addOnCheckedStateChangedListener { _, _ ->
             changeCheckItem(holder, position)
-            true
         }
+
         holder.itemView.setOnClickListener {
             openEditActivity(holder.itemView.context, position)
         }
@@ -62,14 +60,9 @@ class MyAdapterItems(val app: MyApplication) :
     private fun changeCheckItem(holder: MyViewHolder, position: Int) {
         val current = app.currentList.items[position]
         current.checked = !current.checked
-        holder.checkBoxIV.setImageResource(
-            if (current.checked) R.drawable.checkbox_circle else R.drawable.checkbox_blank_circle
-        )
 
         val serialization = Serialization(holder.itemView.context)
         serialization.updateInfo(app.currentList.uuid,app.currentList)
-
-        notifyItemChanged(position)
     }
 
     /*private fun showDeleteConfirmationDialog(context: Context, position: Int) {

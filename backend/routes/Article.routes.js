@@ -5,9 +5,9 @@ const {
 	getArticle,
 	updateArticle,
 	deleteArticle,
-	createArticle, getArticlesFromCategory, getArticlesFromStore, queryArticles,
 	compareListOfArticles,
-} = require("../controllers/Article.controller");
+	createArticle, getArticlesFromCategory, getArticlesFromStore, queryArticles,
+} = require("../controllers/Article/Article.controller");
 
 
 router.get("/", getArticles);																// Get all articles

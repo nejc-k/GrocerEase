@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { getUsers, getUser, register } = require("../controllers/User.controller");
+const { getUsers, getUser, register } = require("../controllers/User/User.controller");
 
 router.get("/", getUsers);              // Get all users
 router.get("/:id", getUser);            // Get specific user by provided ID

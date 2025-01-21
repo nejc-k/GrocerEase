@@ -1,5 +1,5 @@
 const express = require("express");
-const { getStores, getStore, createStore, updateStore, deleteStore } = require("../controllers/Store.controller");
+const { getStores, getStore, createStore, updateStore, deleteStore } = require("../controllers/Store/Store.controller");
 const router = express.Router();
 
 router.get("/", getStores);						// Get all stores

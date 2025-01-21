@@ -1,5 +1,6 @@
 const { Request, Response } = require("express");
-const Article = require("../models/Article.model");
+const Article = require("../../models/Article.model");
+
 /**
  * @description Get all articles from the database
  * @param {Request} req - Request object
@@ -71,14 +72,18 @@ exports.getArticlesFromCategory = async (req, res) => {
  * */
 exports.queryArticles = async (req, res) => {
 	try {
+		const page = req.query.page || 1;
+		const pageSize = 50;
 		const query = {};
 		if (req.body.category) query.category = req.body.category;
 		if (req.body.store) query.store = req.body.store.toLowerCase();
 		if (req.body.max_price) query.price = { $lte: req.body.max_price };
 		if (req.body.min_price) query.price = { $gte: req.body.min_price };
 		if (req.body.title) query.title = { $regex: new RegExp(req.body.title, "i") };
-		 
-		const articles = await Article.find(query);
+
+		const articles = await Article.find(query)
+			.skip((page - 1) * pageSize)
+			.limit(pageSize);
 		if (!articles.length)
 			return res.status(404).json({ message: "Articles not found" });
 
@@ -185,12 +190,12 @@ exports.compareListOfArticles = async (req, res) => {
 	  acc[store] = { total: 0, items: [], hasAllItems: true };
 	  return acc;
 	}, {});
-  
+
 	for (const item of items) {
 	  const { title, amount } = item;
 	  const words = title.split(' ');
 	  const firstWord = words[0];
-  
+
 	  const similarArticles = await Article.find({
 		title: { $regex: new RegExp(`^${firstWord}`, 'i') },
 	  });
@@ -201,11 +206,11 @@ exports.compareListOfArticles = async (req, res) => {
 	 	  stores.forEach(store => {
 		let closestMatch = null;
 		let minDistance = Infinity;
-  
+
 		const extractSize = (title) => {
 			const splitWords = title.split(",");
 			const sizeString = splitWords.at(-1).trim();
-			const sizeMatch = sizeString.match(/(\d+(\.\d+)?)/); 
+			const sizeMatch = sizeString.match(/(\d+(\.\d+)?)/);
 			return sizeMatch ? parseFloat(sizeMatch[0]) : null;
 		};
 
@@ -219,7 +224,7 @@ exports.compareListOfArticles = async (req, res) => {
 		similarArticles.forEach(article => {
 		  if (article.store === store) {
 			const normalizeUnits = (title) => {
-				return title.replace(/(\d+)\s*[gG]/g, '$1g').replace(/\s+/g, ''); 
+				return title.replace(/(\d+)\s*[gG]/g, '$1g').replace(/\s+/g, '');
 			};
 			const normalizedTitle = normalizeUnits(article.title)
 			const articleSize = extractSize(normalizedTitle);
@@ -230,14 +235,14 @@ exports.compareListOfArticles = async (req, res) => {
 			// const splitWords = articleWords.split(",")
 			// const size = splitWords.at(-1)
 			// const articleSize = extractSize(normalizedTitle);
-			// const itemSize = extractSize(title); 
+			// const itemSize = extractSize(title);
 
 			// console.log(size)
 			let totalDistance = 0;
-		if ( isSizeWithinThreshold(itemSize, articleSize, 50)) { 
+		if ( isSizeWithinThreshold(itemSize, articleSize, 50)) {
 		const articleWords = article.title.split(' ');
-	
-  
+
+
 			for (const word of words) {
 			  let wordDistance = Infinity;
 			  for (const articleWord of articleWords) {
@@ -247,9 +252,9 @@ exports.compareListOfArticles = async (req, res) => {
 				}
 			  }
 			  totalDistance += wordDistance;
-			  
+
 			}
-  
+
 			if (totalDistance < minDistance) {
 			  minDistance = totalDistance;
 			  closestMatch = article;
@@ -257,13 +262,13 @@ exports.compareListOfArticles = async (req, res) => {
 		  }
 		}
 		});
-  
+
 		if (closestMatch) {
 		  const otherStorePrices = stores.filter(s => s !== store)
 			.map(s => storeMatches[s].items.find(item => item.title === closestMatch.title)?.price || 0);
-  
+
 		//   const oldPrice = Math.max(...otherStorePrices, otherStorePrices);
-  
+
 
 		  storeMatches[store].total += closestMatch.price;
 		  storeMatches[store].items.push({
@@ -277,24 +282,24 @@ exports.compareListOfArticles = async (req, res) => {
 		}
 	  });
 	}
-  
+
 	// Filter out stores that don't have all items
 	const validStores = stores.filter(store => storeMatches[store].hasAllItems);
-  
+
 	if (validStores.length === 0) {
 	  return res.status(404).json({ message: 'No store has all requested items.' });
 	}
-  
+
 	let cheapestStore = null;
 	let lowestTotal = Infinity;
-  
+
 	validStores.forEach(store => {
 	  if (storeMatches[store].total < lowestTotal) {
 		lowestTotal = storeMatches[store].total;
 		cheapestStore = store;
 	  }
 	});
-  
+
 	if (cheapestStore) {
 		//  console.log({
 		// 	store: cheapestStore,
@@ -308,6 +313,5 @@ exports.compareListOfArticles = async (req, res) => {
 	  });
 	}
   };
-  
-  
-  
+
+

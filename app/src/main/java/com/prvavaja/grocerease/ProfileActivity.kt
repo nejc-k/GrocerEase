@@ -34,7 +34,6 @@ class ProfileActivity : AppCompatActivity() {
         usernameProfile = findViewById(R.id.usernameProfile)
         emailProfile = findViewById(R.id.emailProfile)
         btnLogout = findViewById(R.id.btnLogout)
-        btnBack= findViewById(R.id.btnBack)
 
 
         if (isInternetAvailable()) {
@@ -45,11 +44,6 @@ class ProfileActivity : AppCompatActivity() {
 
         btnLogout.setOnClickListener {
             logoutUser()
-        }
-
-        btnBack.setOnClickListener {
-            val intent = Intent(this, HomeActivity::class.java)
-            startActivity(intent)
         }
     }
 

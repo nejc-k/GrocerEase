@@ -51,6 +51,7 @@ dependencies {
     implementation("androidx.activity:activity-ktx:1.9.3")
     implementation("androidx.activity:activity:1.9.3")
     testImplementation("junit:junit:4.13.2")
+    implementation("net.nicbell.material-lists:listitem:0.6.1")
     implementation("androidx.core:core-splashscreen:1.0.1")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
     implementation("org.osmdroid:osmdroid-android:6.1.17")
