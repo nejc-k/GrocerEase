@@ -17,7 +17,7 @@ class MyAdapterLists(val app: MyApplication, val goesToStore: String, val StoreN
     class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val listItem: ListItem
         init{
-            listItem = itemView.findViewById(R.id.listItemId)
+            listItem = itemView.findViewById(R.id.itemId)
         }
     }
 

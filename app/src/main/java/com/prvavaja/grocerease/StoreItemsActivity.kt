@@ -16,6 +16,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.appbar.MaterialToolbar
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
@@ -46,10 +47,10 @@ class StoreItemsActivity : AppCompatActivity() {
         shortStoreName = intent.getStringExtra("STORE").toString()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_store_items)
-        val singleListTitleTV: TextView = this.findViewById(R.id.storeListTitleTV)
+        val title: MaterialToolbar = this.findViewById(R.id.topAppBar)
         val listToAddTo: TextView = this.findViewById(R.id.listToAddToTV)
         val searchView: SearchView = this.findViewById(R.id.itemsSearchView)
-        singleListTitleTV.text = storeName
+        title.title = storeName
         app = application as MyApplication
         listToAddTo.text = "Current List: " + app.currentList.listName
         // Initialize RecyclerView
