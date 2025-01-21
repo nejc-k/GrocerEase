@@ -64,13 +64,13 @@ class AddEditItemActivity : AppCompatActivity() {
         val storeDD = findViewById<Spinner>(R.id.storeDD)
 
 
-        if(app.currentItem.itemName == ""){
+        if(app.currentItem.title == ""){
             itemTitleTV.text = "Add new item"
         }
         else{
-            itemTitleTV.text = app.currentItem.itemName
+            itemTitleTV.text = app.currentItem.title
         }
-        itemNameET.text = app.currentItem.itemName
+        itemNameET.text = app.currentItem.title
         amountET.text = app.currentItem.amount
         noteET.text = app.currentItem.note
 
@@ -101,7 +101,7 @@ class AddEditItemActivity : AppCompatActivity() {
     }
 
     fun saveOnClick(view: View){
-        app.currentItem.itemName = findViewById<TextView>(R.id.itemNameET).text.toString()
+        app.currentItem.title = findViewById<TextView>(R.id.itemNameET).text.toString()
         app.currentItem.amount = findViewById<TextView>(R.id.amountET).text.toString()
         app.currentItem.note = findViewById<TextView>(R.id.noteET).text.toString()
         app.currentItem.store = findViewById<Spinner>(R.id.storeDD).selectedItem.toString()

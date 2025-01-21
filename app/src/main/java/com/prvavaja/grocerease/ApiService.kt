@@ -12,4 +12,11 @@ interface ApiService {
     fun postItem(
         @Body requestBody: RequestBody
     ): Call<List<BackendItem>>
+
+    @POST("article/compare-prices")
+    fun comparePrices(
+        @Body requestBody: RequestBody
+    ): Call<ApiResponseCompareItems>
+
+
 }

@@ -3,6 +3,7 @@ package com.prvavaja.grocerease
 import android.annotation.SuppressLint
 import android.graphics.Paint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,11 +14,22 @@ import androidx.cardview.widget.CardView
 import androidx.core.text.HtmlCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+import retrofit2.Retrofit
+import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.converter.gson.GsonConverterFactory
 
-class ItemAdapter(private val itemList: List<Item>) :
+class ItemAdapter(private val itemList: MutableList<BackendItem>) :
     RecyclerView.Adapter<ItemAdapter.ItemViewHolder>() {
 
-    private val priceVisibilityList: MutableList<Boolean> = MutableList(itemList.size) { false }
+    private var priceVisibilityList: MutableList<Boolean> = MutableList(itemList.size) { false }
 
     class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val titleTextView: TextView = itemView.findViewById(R.id.titleTextView)
@@ -33,29 +45,40 @@ class ItemAdapter(private val itemList: List<Item>) :
         return ItemViewHolder(itemView)
     }
 
+    fun updateItemList(newItems: List<BackendItem>) {
+        itemList.clear()  // Clear the old list
+        itemList.addAll(newItems)  // Add the new items
+        priceVisibilityList = MutableList(itemList.size){false}
+        togglePriceVisibility()
+        notifyDataSetChanged()  // Notify that the data has changed
+    }
+
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-        val currentItem = itemList[position]
-        holder.titleTextView.text = currentItem.itemName
-        holder.descriptionTextView.text = "Number of items: " + currentItem.amount
-        holder.oldPriceTextView.text = currentItem.oldPrice.toString()
-        holder.newPriceTextView.text = currentItem.newPrice.toString()
-        holder.defaultPriceTextView.text = currentItem.newPrice.toString()
+        if (itemList.isNotEmpty()){
+            val currentItem = itemList[position]
+            holder.titleTextView.text = currentItem.title
+            holder.descriptionTextView.text = "Number of items: " + currentItem.amount
+            holder.oldPriceTextView.text = currentItem.oldPrice.toString()
+            holder.newPriceTextView.text = currentItem.newPrice.toString()
+            holder.defaultPriceTextView.text = currentItem.newPrice.toString()
 
-        if (priceVisibilityList[position]) {
-            if (String.format("%.2f", itemList[position].newPrice).toDouble() <String.format("%.2f", itemList[position].oldPrice).toDouble()  ) {
-                holder.newPriceTextView.visibility = View.VISIBLE
-                holder.oldPriceTextView.visibility = View.VISIBLE
-                holder.oldPriceTextView.paintFlags =
-                    holder.oldPriceTextView.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+            if (priceVisibilityList.isNotEmpty() && priceVisibilityList[position]) {
+
+                if (String.format("%.2f", itemList[position].newPrice).toDouble() <String.format("%.2f", itemList[position].oldPrice).toDouble()  ) {
+                    holder.newPriceTextView.visibility = View.VISIBLE
+                    holder.oldPriceTextView.visibility = View.VISIBLE
+                    holder.oldPriceTextView.paintFlags =
+                        holder.oldPriceTextView.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+                } else {
+                    holder.oldPriceTextView.visibility = View.GONE
+                    holder.newPriceTextView.visibility = View.GONE
+                    holder.defaultPriceTextView.visibility = View.VISIBLE
+                }
             } else {
                 holder.oldPriceTextView.visibility = View.GONE
                 holder.newPriceTextView.visibility = View.GONE
-                holder.defaultPriceTextView.visibility = View.VISIBLE
             }
-        } else {
-            holder.oldPriceTextView.visibility = View.GONE
-            holder.newPriceTextView.visibility = View.GONE
         }
     }
 
@@ -72,67 +95,105 @@ class ItemAdapter(private val itemList: List<Item>) :
 class CompareList : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var itemAdapter: ItemAdapter
-    private lateinit var itemList: List<Item>
+    private lateinit var itemList: MutableList<BackendItem>
+
+    lateinit var app: MyApplication
+    private lateinit var apiService: ApiService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_compare_list)
 
-        itemList = listOf(
-            Item(
-                "Pšenični polbeli kruh, rezan, 1kg",
-                "Description 1",
-                "3",
-                oldPrice = 1.34,
-                newPrice = 1.19
-            ),
-            Item(
-                "Baguetta bela, 250g",
-                "Description 2",
-                "2",
-                oldPrice = 0.44,
-                newPrice = 0.44
-            ),
-            Item("Puding vanilija s smetano, 200g", "", "2", oldPrice = 0.34, newPrice = 0.41),
-            Item("Blejska klobasa, 400g", "", "1", oldPrice = 2.55, newPrice = 2.64),
-            Item("Instant kava 3v1,  10/1, 180g", "", "2", oldPrice = 1.19, newPrice = 1.03),
-            Item("100% sok jabolko, 1l", "", "2", oldPrice = 1.56, newPrice = 1.69),
-            Item("Nektar jabolko, 1l", "", "2", oldPrice = 0.86, newPrice = 0.79),
-            Item("Gazirana naravna mineralna voda primaqua, spar, 1,5l", "", "1", oldPrice = 0.49, newPrice = 0.49),
-        )
+        val retrofit = Retrofit.Builder()
+            .baseUrl("http://10.0.2.2:3000/api/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        apiService = retrofit.create(ApiService::class.java)
+
+        app = application as MyApplication
+
 
         recyclerView = findViewById(R.id.recyclerViewComparePrices)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        itemAdapter = ItemAdapter(itemList)
-        recyclerView.adapter = itemAdapter
 
         val comparePricesButton = findViewById<Button>(R.id.btn_compare_prices)
-        val saveMoneyCard = findViewById<CardView>(R.id.save_money_card)
-        val saveMoneyTextView = findViewById<TextView>(R.id.save_money_text)
 
-        var number = 0.0;
-        for (item in itemList) {
-            val diffPrice = item.oldPrice - item.newPrice;
-            if (diffPrice > 0.0)
-                number += diffPrice * item.amount.toInt()
-        }
-        val number2digits: Double = String.format("%.2f", number).toDouble()
-        if (number > 0) {
-            val store = "Lidl"
-            val message =
-                "Save <b>$number2digits</b>€ by buying these items in <b>$store</b>."
-            saveMoneyTextView.text = HtmlCompat.fromHtml(message, HtmlCompat.FROM_HTML_MODE_LEGACY)
-
-        }
+        itemList = mutableListOf()
+        itemAdapter = ItemAdapter(itemList)
+        recyclerView.adapter = itemAdapter
+        comparePrices()
 
         comparePricesButton.setOnClickListener {
-            if (saveMoneyCard.visibility == View.GONE) {
-                saveMoneyCard.visibility = View.VISIBLE
-            } else {
-                saveMoneyCard.visibility = View.GONE
-            }
-
             itemAdapter.togglePriceVisibility()
         }
+
+
     }
+    private fun comparePrices() {
+        val itemsMap = mapOf("items" to app.currentList.items)
+        val jsonString = Json.encodeToString(itemsMap)
+
+        val contentType = "application/json".toMediaTypeOrNull()
+        val requestBody = jsonString.toRequestBody(contentType)
+
+        apiService.comparePrices(requestBody).enqueue(object : Callback<ApiResponseCompareItems> {
+            override fun onResponse(
+                call: Call<ApiResponseCompareItems>,
+                response: Response<ApiResponseCompareItems>
+            ) {
+                if (response.isSuccessful) {
+                    val apiResponse = response.body()
+                    val store = apiResponse?.store
+                    val total = apiResponse?.total
+                    val items = apiResponse?.items
+
+                    if (items != null && items.isNotEmpty()) {
+                        itemList = items
+                        itemAdapter.updateItemList(items)
+                        itemAdapter.togglePriceVisibility()
+                        itemAdapter.notifyDataSetChanged()
+                    }
+                    val saveMoneyCard = findViewById<CardView>(R.id.save_money_card)
+                    val saveMoneyTextView = findViewById<TextView>(R.id.save_money_text)
+
+                    var number = 0.0;
+                    if (items != null && items.isNotEmpty()) {
+                        for (item in itemList) {
+
+                            if (item.oldPrice != null && item.newPrice != null){
+                                val diffPrice = item.oldPrice - item.newPrice;
+                                if (diffPrice > 0.0)
+                                    if (item.amount == null)  {
+                                        number += diffPrice
+                                    }
+                                    else{
+                                       number += diffPrice*item.amount
+                                    }
+                            }
+                        }
+                        itemAdapter.togglePriceVisibility()
+                    }
+                    val number2digits: Double = String.format("%.2f", number).toDouble()
+                    if (number > 0) {
+                        val store = store
+                        val message =
+                            "Save <b>$number2digits</b>€ by buying these items in <b>$store</b>."
+                        saveMoneyTextView.text = HtmlCompat.fromHtml(message, HtmlCompat.FROM_HTML_MODE_LEGACY)
+                    }
+
+
+                    Log.e("RESPONSE", store.toString())
+
+                } else {
+                    println("Failed to fetch items: ${response.code()}")
+                }
+            }
+
+            override fun onFailure(call: Call<ApiResponseCompareItems>, t: Throwable) {
+                Log.e("ERROR", t.message.toString())
+            }
+        })
+    }
+
 }

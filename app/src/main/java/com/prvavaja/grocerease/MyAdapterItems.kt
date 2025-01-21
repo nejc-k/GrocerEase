@@ -37,7 +37,7 @@ class MyAdapterItems(val app: MyApplication) :
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val current = app.currentList.items[position]
-        holder.itemNameTV.text = current.itemName
+        holder.itemNameTV.text = current.title
         holder.amountTV.text = current.amount
 
         holder.checkBoxIV.setImageResource(

@@ -1,6 +1,5 @@
 const { Request, Response } = require("express");
 const Article = require("../models/Article.model");
-
 /**
  * @description Get all articles from the database
  * @param {Request} req - Request object
@@ -177,3 +176,138 @@ exports.deleteArticle = async (req, res) => {
 		res.status(500).json({ message: "Server error", error });
 	}
 };
+
+exports.compareListOfArticles = async (req, res) => {
+	const { items } = req.body;
+	const leven = (await import('leven')).default;
+	const stores = ["spar", "mercator", "tus"];
+	const storeMatches = stores.reduce((acc, store) => {
+	  acc[store] = { total: 0, items: [], hasAllItems: true };
+	  return acc;
+	}, {});
+  
+	for (const item of items) {
+	  const { title, amount } = item;
+	  const words = title.split(' ');
+	  const firstWord = words[0];
+  
+	  const similarArticles = await Article.find({
+		title: { $regex: new RegExp(`^${firstWord}`, 'i') },
+	  });
+	  console.log(similarArticles)
+
+	  var oldPrice = 0 ;
+
+	 	  stores.forEach(store => {
+		let closestMatch = null;
+		let minDistance = Infinity;
+  
+		const extractSize = (title) => {
+			const splitWords = title.split(",");
+			const sizeString = splitWords.at(-1).trim();
+			const sizeMatch = sizeString.match(/(\d+(\.\d+)?)/); 
+			return sizeMatch ? parseFloat(sizeMatch[0]) : null;
+		};
+
+		const isSizeWithinThreshold = (size1, size2, threshold) => {
+			return Math.abs(size1 - size2) <= threshold;
+
+		};
+
+
+
+		similarArticles.forEach(article => {
+		  if (article.store === store) {
+			const normalizeUnits = (title) => {
+				return title.replace(/(\d+)\s*[gG]/g, '$1g').replace(/\s+/g, ''); 
+			};
+			const normalizedTitle = normalizeUnits(article.title)
+			const articleSize = extractSize(normalizedTitle);
+			const itemSize = extractSize(title);
+
+			// const articleWords = title.split(' ')[0];
+			// console.log(articleWords)
+			// const splitWords = articleWords.split(",")
+			// const size = splitWords.at(-1)
+			// const articleSize = extractSize(normalizedTitle);
+			// const itemSize = extractSize(title); 
+
+			// console.log(size)
+			let totalDistance = 0;
+		if ( isSizeWithinThreshold(itemSize, articleSize, 50)) { 
+		const articleWords = article.title.split(' ');
+	
+  
+			for (const word of words) {
+			  let wordDistance = Infinity;
+			  for (const articleWord of articleWords) {
+				const distance = leven(word, articleWord);
+				if (distance < wordDistance) {
+				  wordDistance = distance;
+				}
+			  }
+			  totalDistance += wordDistance;
+			  
+			}
+  
+			if (totalDistance < minDistance) {
+			  minDistance = totalDistance;
+			  closestMatch = article;
+			}
+		  }
+		}
+		});
+  
+		if (closestMatch) {
+		  const otherStorePrices = stores.filter(s => s !== store)
+			.map(s => storeMatches[s].items.find(item => item.title === closestMatch.title)?.price || 0);
+  
+		//   const oldPrice = Math.max(...otherStorePrices, otherStorePrices);
+  
+
+		  storeMatches[store].total += closestMatch.price;
+		  storeMatches[store].items.push({
+			...closestMatch.toObject(),
+			oldPrice,
+			newPrice: closestMatch.price,
+			amount: amount
+		  });
+		} else {
+		  storeMatches[store].hasAllItems = false; // Mark store as missing an item
+		}
+	  });
+	}
+  
+	// Filter out stores that don't have all items
+	const validStores = stores.filter(store => storeMatches[store].hasAllItems);
+  
+	if (validStores.length === 0) {
+	  return res.status(404).json({ message: 'No store has all requested items.' });
+	}
+  
+	let cheapestStore = null;
+	let lowestTotal = Infinity;
+  
+	validStores.forEach(store => {
+	  if (storeMatches[store].total < lowestTotal) {
+		lowestTotal = storeMatches[store].total;
+		cheapestStore = store;
+	  }
+	});
+  
+	if (cheapestStore) {
+		//  console.log({
+		// 	store: cheapestStore,
+		// 	total: storeMatches[cheapestStore].total,
+		// 	items: storeMatches[cheapestStore].items,
+		//   })
+	  res.json({
+		store: cheapestStore,
+		total: storeMatches[cheapestStore].total,
+		items: storeMatches[cheapestStore].items,
+	  });
+	}
+  };
+  
+  
+  
