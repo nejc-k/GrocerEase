@@ -55,17 +55,20 @@ class ItemAdapter(private val itemList: MutableList<BackendItem>) :
 
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
+        Log.d("ItemAdapter", "Binding before checking if empty")
         if (itemList.isNotEmpty()){
             val currentItem = itemList[position]
             holder.titleTextView.text = currentItem.title
+            Log.d("ItemAdapter", "Binding item: ${currentItem.title}")
             holder.descriptionTextView.text = "Number of items: " + currentItem.amount
-            holder.oldPriceTextView.text = currentItem.oldPrice.toString()
-            holder.newPriceTextView.text = currentItem.newPrice.toString()
-            holder.defaultPriceTextView.text = currentItem.newPrice.toString()
+            holder.oldPriceTextView.text = String.format("%.2f", currentItem.oldPrice)
+            holder.newPriceTextView.text = String.format("%.2f", currentItem.newPrice)
+            holder.defaultPriceTextView.text = String.format("%.2f", currentItem.newPrice)
 
             if (priceVisibilityList.isNotEmpty() && priceVisibilityList[position]) {
 
-                if (String.format("%.2f", itemList[position].newPrice).toDouble() <String.format("%.2f", itemList[position].oldPrice).toDouble()  ) {
+//                if .toDouble() <String.format("%.2f", itemList[position].oldPrice).toDouble()  ) {
+                  if (itemList[position].newPrice!! < itemList[position].oldPrice!!) {
                     holder.newPriceTextView.visibility = View.VISIBLE
                     holder.oldPriceTextView.visibility = View.VISIBLE
                     holder.oldPriceTextView.paintFlags =
@@ -82,7 +85,10 @@ class ItemAdapter(private val itemList: MutableList<BackendItem>) :
         }
     }
 
-    override fun getItemCount() = itemList.size
+    override fun getItemCount() :Int{
+        Log.d("ItemCount",itemList.size.toString() )
+        return itemList.size
+    }
 
     fun togglePriceVisibility() {
         for (i in priceVisibilityList.indices) {
@@ -117,17 +123,10 @@ class CompareList : AppCompatActivity() {
         recyclerView = findViewById(R.id.recyclerViewComparePrices)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        val comparePricesButton = findViewById<Button>(R.id.btn_compare_prices)
-
         itemList = mutableListOf()
         itemAdapter = ItemAdapter(itemList)
         recyclerView.adapter = itemAdapter
         comparePrices()
-
-        comparePricesButton.setOnClickListener {
-            itemAdapter.togglePriceVisibility()
-        }
-
 
     }
     private fun comparePrices() {
@@ -148,11 +147,11 @@ class CompareList : AppCompatActivity() {
                     val total = apiResponse?.total
                     val items = apiResponse?.items
 
-                    if (items != null && items.isNotEmpty()) {
-                        itemList = items
+                    if (!items.isNullOrEmpty()) {
+//                        itemList = items
                         itemAdapter.updateItemList(items)
-                        itemAdapter.togglePriceVisibility()
-                        itemAdapter.notifyDataSetChanged()
+                        Log.d("ITEMS CAST", itemList.toString())
+//                        itemAdapter.notifyDataSetChanged()
                     }
                     val saveMoneyCard = findViewById<CardView>(R.id.save_money_card)
                     val saveMoneyTextView = findViewById<TextView>(R.id.save_money_text)
@@ -174,16 +173,17 @@ class CompareList : AppCompatActivity() {
                         }
                         itemAdapter.togglePriceVisibility()
                     }
-                    val number2digits: Double = String.format("%.2f", number).toDouble()
+                    val number2digits  = String.format("%.2f", number)
                     if (number > 0) {
-                        val store = store
                         val message =
                             "Save <b>$number2digits</b>€ by buying these items in <b>$store</b>."
                         saveMoneyTextView.text = HtmlCompat.fromHtml(message, HtmlCompat.FROM_HTML_MODE_LEGACY)
+                        saveMoneyCard.visibility = View.VISIBLE
                     }
 
 
                     Log.e("RESPONSE", store.toString())
+                    Log.e("ITEMS", itemList.toString())
 
                 } else {
                     println("Failed to fetch items: ${response.code()}")

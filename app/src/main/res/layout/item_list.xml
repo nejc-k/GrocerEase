@@ -6,7 +6,6 @@
     android:backgroundTint="@color/material_on_primary_emphasis_medium"
     android:elevation="4dp">
 <net.nicbell.materiallists.ListItem
-    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/listItemId"
     android:layout_width="match_parent"
@@ -14,7 +13,6 @@
     app:headline="Headline"
     app:sizeType="TWO_LINES"
     app:supportText="Support text"
-    android:backgroundTint="@color/material_dynamic_neutral_variant30"
     android:elevation="4dp">
 
     <com.google.android.material.checkbox.MaterialCheckBox
