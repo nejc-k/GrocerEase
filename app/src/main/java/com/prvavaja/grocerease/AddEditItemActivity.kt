@@ -8,6 +8,7 @@ import android.widget.Spinner
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.appbar.MaterialToolbar
 
 class AddEditItemActivity : AppCompatActivity() {
     var stores = arrayOf<String?>(
@@ -57,20 +58,20 @@ class AddEditItemActivity : AppCompatActivity() {
         app = application as MyApplication
         myAdapter = MyAdapterLists(app,"null", "null")
         serialization = Serialization(this)
-        val itemTitleTV = findViewById<TextView>(R.id.itemTitleTV)
+        val appBar = findViewById<MaterialToolbar>(R.id.topAppBar)
         val itemNameET = findViewById<TextView>(R.id.itemNameET)
         val amountET = findViewById<TextView>(R.id.amountET)
         val noteET = findViewById<TextView>(R.id.noteET)
         val storeDD = findViewById<Spinner>(R.id.storeDD)
 
 
-        if(app.currentItem.itemName == ""){
-            itemTitleTV.text = "Add new item"
+        if(app.currentItem.title == ""){
+            appBar.title = "Add new item"
         }
         else{
-            itemTitleTV.text = app.currentItem.itemName
+            appBar.title = app.currentItem.title
         }
-        itemNameET.text = app.currentItem.itemName
+        itemNameET.text = app.currentItem.title
         amountET.text = app.currentItem.amount
         noteET.text = app.currentItem.note
 
@@ -101,7 +102,7 @@ class AddEditItemActivity : AppCompatActivity() {
     }
 
     fun saveOnClick(view: View){
-        app.currentItem.itemName = findViewById<TextView>(R.id.itemNameET).text.toString()
+        app.currentItem.title = findViewById<TextView>(R.id.itemNameET).text.toString()
         app.currentItem.amount = findViewById<TextView>(R.id.amountET).text.toString()
         app.currentItem.note = findViewById<TextView>(R.id.noteET).text.toString()
         app.currentItem.store = findViewById<Spinner>(R.id.storeDD).selectedItem.toString()

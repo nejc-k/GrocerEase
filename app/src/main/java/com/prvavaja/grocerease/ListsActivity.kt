@@ -14,6 +14,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import net.nicbell.materiallists.ListItem
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -112,13 +113,11 @@ class ListsActivity : AppCompatActivity() {
     private fun addListItem(index: Int, listName: String, createdDate: String, itemCount: Int) {
         val listItemView = layoutInflater.inflate(R.layout.lists_item, scrollableListContainer, false)
 
-        val listNameTV: TextView = listItemView.findViewById(R.id.listNameTV)
-        val numOfItemsTV: TextView = listItemView.findViewById(R.id.numOfItemsTV)
-        val createdTV: TextView = listItemView.findViewById(R.id.createdTV)
+        val listItem = listItemView.findViewById<ListItem>(R.id.itemId)
 
-        listNameTV.text = listName
-        numOfItemsTV.text = itemCount.toString()
-        createdTV.text = createdDate
+        listItem.headline.text = listName
+        val text = "Number of items: ${itemCount}\nCreated: ${createdDate}"
+        listItem.supportText.text = text
 
         listItemView.setOnLongClickListener {
             showDeleteConfirmationDialog(this, index)
