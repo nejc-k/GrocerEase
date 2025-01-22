@@ -1,5 +1,5 @@
 const { Request, Response } = require("express");
-const Store = require("../../models/Store.model");
+const Store = require("../../models/Store/Store.model");
 
 /**
  * @description Get all stores from the database

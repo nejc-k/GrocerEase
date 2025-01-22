@@ -1,5 +1,5 @@
 const { Request, Response } = require("express");
-const Article = require("../../models/Article.model");
+const Article = require("../../models/Article/Article.model");
 
 /**
  * @description Get all articles from the database
@@ -27,7 +27,7 @@ exports.getArticles = async (req, res) => {
  */
 exports.getArticlesFromStore = async (req, res) => {
 	try {
-		const articles = await Article.find({ category: req.params.id });
+		const articles = await Article.find({ store: req.params.id });
 		if (!articles.length) {
 			return res.status(404).json({ message: "Articles not found" });
 		}
@@ -76,7 +76,8 @@ exports.queryArticles = async (req, res) => {
 		const pageSize = 50;
 		const query = {};
 		if (req.body.category) query.category = req.body.category;
-		if (req.body.store) query.store = req.body.store.toLowerCase();
+		// if (req.body.store) query.store = req.body.store.toLowerCase();
+		if (req.body.store) query.store = req.body.store;
 		if (req.body.max_price) query.price = { $lte: req.body.max_price };
 		if (req.body.min_price) query.price = { $gte: req.body.min_price };
 		if (req.body.title) query.title = { $regex: new RegExp(req.body.title, "i") };
@@ -166,16 +167,17 @@ exports.updateArticle = async (req, res) => {
  * @description Delete an article from the database
  * @param {Request} req - Request object
  * @param {Response} res - Response object
- * @returns {Promise<void>} - Promise object
+ * @returns {Promise<void | Response>} - Promise object
  */
 exports.deleteArticle = async (req, res) => {
 	try {
 		const article = await Article.findById(req.params.id);
+
 		if (!article) {
 			return res.status(404).json({ error: "Article not found" });
 		}
 
-		await article.remove();
+		await article.deleteOne();
 		res.status(204).json({ message: "Article deleted successfully" });
 	} catch (error) {
 		res.status(500).json({ message: "Server error", error });
